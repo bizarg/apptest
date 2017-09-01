@@ -19,3 +19,5 @@ Config::set('db_name', 'apptest');
 Config::set('user', 'root');
 Config::set('pass', '');
 
+Config::set('salt', 'hfse783fgsdf83gv');
+

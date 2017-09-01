@@ -23,5 +23,10 @@ class DB
         return self::$connection;
     }
 
+//    public static function query($sql)
+//    {
+//
+//    }
+
     private function __clone(){}
 }

@@ -54,6 +54,11 @@ class Router
 
     }
 
+    public static function redirect($location)
+    {
+        return header("Location: $location");
+    }
+
     /**
      * @return mixed
      */

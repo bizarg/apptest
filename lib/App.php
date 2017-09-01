@@ -20,23 +20,18 @@ class App
 
         self::$db = DB::getConnect();
 
-//        $pages = self::$db->query('SELECT * FROM pages');
-//
-//        foreach ($pages->fetchAll(PDO::FETCH_ASSOC) as $row) {
-//            echo "<pre>";
-//            print_r($row);
-//            echo "</pre>";
-//        }
-//        die;
-
-
-
-
         Lang::load(self::$router->getLanguage());
 
         $controller_class = ucfirst(self::$router->getController()).'Controller';
         $controller_method = strtolower(self::$router->getMethodPrefix().self::$router->getAction());
 
+        $layout = self::$router->getRoute();
+
+//        if ($layout == 'admin' && Session::get('role') != 'admin') {
+//            if ($controller_method != 'admin_login') {
+//                Router::redirect('/admin/users/login');
+//            }
+//        }
 
         $controller_object = new $controller_class();
 
@@ -47,8 +42,6 @@ class App
         } else {
             throw new Exception('Method '. $controller_method. ' of class '.$controller_class. ' does not exist.');
         }
-
-        $layout = self::$router->getRoute();
 
         $layout_path = VIEWS_PATH.DS.$layout.'.php';
 

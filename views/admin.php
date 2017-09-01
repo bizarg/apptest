@@ -5,6 +5,8 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="http://apptest.loc/css/style.css">
+    <script src="http://apptest.loc/js/admin.js"></script>
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -14,7 +16,9 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <title><?=Config::get('site_name')?></title>
+
+
+    <title><?=Config::get('site_name')?> - <?=__('panel')?></title>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -26,13 +30,16 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/"><?=Config::get('site_name')?></a>
+            <a class="navbar-brand" href="/"><?=Config::get('site_name')?> - <?=__('panel')?></a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
+            <?php if (Session::get('login')) : ?>
             <ul class="nav navbar-nav">
-                <li><a <?php if(App::getRouter()->getController() == "pages") {?> class='active' <?php } ;?> href='/pages/'>Pages</a></li>
-                <li><a <?php if(App::getRouter()->getController() == "contacts") {?> class='active' <?php } ;?> href="/contacts/">Contacts</a></li>
+                <li><a <?php if(App::getRouter()->getController() == "pages") {?> class='active' <?php } ;?> href='/admin/pages/'>Pages</a></li>
+                <li><a <?php if(App::getRouter()->getController() == "contacts") {?> class='active' <?php } ;?> href="/admin/contacts/">Contacts</a></li>
+                <li><a href="/admin/users/logout">Logout</a></li>
             </ul>
+            <?php endif; ?>
         </div><!--/.nav-collapse -->
     </div>
 </nav>
@@ -48,6 +55,7 @@
         <?=$data['content']?>
     </div>
 </div><!-- /.container -->
+
 
 </body>
 </html>
