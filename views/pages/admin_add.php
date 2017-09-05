@@ -1,5 +1,5 @@
 <h3>Add page</h3>
-<form action="post" method="post">
+<form action="/admin/pages/add" method="post">
     <div class="form-group">
         <label for="alias">Alias</label>
         <input type="text" id="alias" name="alias" value="" class="form-control">

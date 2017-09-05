@@ -18,15 +18,13 @@ class ContactsController extends Controller
     {
 
         if ($_POST) {
+            if (!isset($_POST['name']) || !isset($_POST['email']) || !isset($_POST['message'])) {
+                return false;
+            }
 
-            if ($this->model->save($_POST)) {
+            if ($this->model->create($_POST)) {
                 Session::setFlash('Thank you! Your message was successfuly!');
             }
         }
-    }
-
-    public function admin_index()
-    {
-        $this->data = $this->model->getList();
     }
 }

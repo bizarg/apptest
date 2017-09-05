@@ -10,6 +10,10 @@ class Router
     protected $language;
     protected $method_prefix;
 
+    /**
+     * Router constructor.
+     * @param $uri
+     */
     public function __construct($uri)
     {
         $this->uri = urldecode(trim($uri, '/'));
@@ -39,7 +43,7 @@ class Router
             }
 
             if (current($path_parts)) {
-                $this->controller = strtolower(current($path_parts));
+                $this->controller = ucfirst(strtolower(current($path_parts)));
                 array_shift($path_parts);
             }
 
@@ -106,11 +110,6 @@ class Router
     {
         $this->method_prefix = $method_prefix;
     }
-
-    /**
-     * Router constructor.
-     * @param $uri
-     */
 
     /**
      * @return mixed

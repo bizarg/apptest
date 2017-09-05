@@ -1,7 +1,11 @@
 <?php
 
+//use apptest\lib\ValidateData;
+
 class Controller
 {
+    use ValidateData;
+
     protected $data;
     protected $model;
     protected $params;

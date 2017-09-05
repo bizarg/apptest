@@ -2,14 +2,21 @@
 
 class User extends Model
 {
-    public function getByLogin($login)
+    protected $class = 'User';
+    protected $table = 'users';
+    protected $fillable = ['id', 'login', 'email', 'role', 'password', 'is_active'];
+
+    public function signin($data)
     {
-        $sql = "SELECT * FROM users WHERE login = '{$login}' LIMIT 1";
-        $result = $this->db->query($sql);
-        $result = $result->fetchAll(PDO::FETCH_ASSOC);
-        if (isset($result)) {
-            return$result[0];
+        $hash = md5(Config::get('salt') . $data['password']);
+        dd($this);
+        if ($this->is_active && $hash == $this->password) {
+            Session::set('login', $this->login);
+            Session::set('role', $this->role);
         }
-        return false;
+        dd(Session::get('login')." : ".Session::get('role'));
+        return Router::redirect('/pages/index');
     }
+
+
 }

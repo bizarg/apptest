@@ -2,31 +2,44 @@
 
 class DB
 {
-    private static $connection;
+    private static $instance;
+    private $conn = null;
 
     private function __construct()
     {
     }
 
-    public static function getConnect()
+    public static function getInstance()
     {
-        if(!self::$connection){
-            try {
-                self::$connection = new PDO('mysql:host='.Config::get('db_host').';dbname='.Config::get('db_name'), Config::get('user'), Config::get('pass'));
-                self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                self::$connection->exec('SET NAMES "utf8"');
-            } catch (PDOException $e) {
-                print "Error!: " . $e->getMessage() . "<br/>";
-                die();
-            }
+        if(!self::$instance){
+           self::$instance = new self();
         }
-        return self::$connection;
+        return self::$instance;
     }
 
-//    public static function query($sql)
-//    {
-//
-//    }
+    private function initConnect()
+    {
+        $this->conn = new PDO('mysql:host='.Config::get('db_host').';dbname='.Config::get('db_name'), Config::get('user'), Config::get('pass'));
+        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->conn->exec('SET NAMES "utf8"');
+    }
+
+    public function get($sql)
+    {
+        if($this->conn === null) $this->initConnect();
+
+        $result = $this->conn->query($sql);
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function input($sql)
+    {
+        if($this->conn === null) $this->initConnect();
+        $result = $this->conn->query($sql);
+        if (!$result) return false;
+
+        return true;
+    }
 
     private function __clone(){}
 }

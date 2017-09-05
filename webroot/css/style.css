@@ -13,3 +13,7 @@ form {
     width: 400px;
     max-width: 400px;
 }
+
+.flex-control-thumbs img {
+    width: 50px;
+}

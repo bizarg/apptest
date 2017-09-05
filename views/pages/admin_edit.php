@@ -1,5 +1,5 @@
 <h3>Edit page</h3>
-<form action="post" method="post">
+<form action="/admin/pages/edit" method="post">
     <input type="hidden" name="id" value="<?=$data['page']['id']?>"/>
     <div class="form-group">
         <label for="alias">Alias</label>

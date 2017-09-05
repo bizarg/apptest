@@ -35,9 +35,10 @@
         <div id="navbar" class="collapse navbar-collapse">
             <?php if (Session::get('login')) : ?>
             <ul class="nav navbar-nav">
-                <li><a <?php if(App::getRouter()->getController() == "pages") {?> class='active' <?php } ;?> href='/admin/pages/'>Pages</a></li>
-                <li><a <?php if(App::getRouter()->getController() == "contacts") {?> class='active' <?php } ;?> href="/admin/contacts/">Contacts</a></li>
-                <li><a href="/admin/users/logout">Logout</a></li>
+                <li><a <?php if(App::getRouter()->getController() == "AdminPages") {?> class='active' <?php } ;?> href='/admin/pages/'>Pages</a></li>
+                <li><a <?php if(App::getRouter()->getController() == "AdminContacts") {?> class='active' <?php } ;?> href="/admin/contacts/">Contacts</a></li>
+                <li><a <?php if(App::getRouter()->getController() == "AdminImages") {?> class='active' <?php } ;?> href="/admin/images/">Images</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
             </ul>
             <?php endif; ?>
         </div><!--/.nav-collapse -->
@@ -49,6 +50,14 @@
         <?php if (Session::hasFlash()) : ?>
             <div class="alert alert-info" role="alert">
                 <?php Session::flash(); ?>
+            </div>
+        <?php endif; ?>
+        <?php if (Session::has('error')) : ?>
+            <div class="alert alert-warning" role="alert">
+                <?php foreach (Session::get('error') as $error) : ?>
+                    <p><?=$error?></p>
+                <?php endforeach; ?>
+                <?php Session::delete('error') ?>
             </div>
         <?php endif; ?>
 

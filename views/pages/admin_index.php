@@ -1,17 +1,12 @@
 <h3>Pages</h3><br/>
 
-<?php if (Session::hasFlash()) : ?>
-fkasdjfk easklfaskld klafnsdklfnaskd
-    <?php else : ?>
-    237846y7772358
-<?php endif; ?>
 <table class="table table-strioed" style="width: 400px">
     <?php foreach ($data['pages'] as $page) : ?>
         <tr>
-            <td><b><?=$page['title']?></b></td>
+            <td><b><?=$page->title?></b></td>
             <td>
-                <a href="/admin/pages/edit/<?=$page['id']?>"><button class="btn btn-sm btn-primary">edit</button></a>
-                <a href="/admin/pages/delete/<?=$page['id']?>" onclick="return confirmDelete();"><button class="btn btn-sm btn-warning">delete</button></a>
+                <a href="/admin/pages/edit/<?=$page->id?>"><button class="btn btn-sm btn-primary">edit</button></a>
+                <a href="/admin/pages/delete/<?=$page->id?>" onclick="return confirmDelete();"><button class="btn btn-sm btn-warning">delete</button></a>
             </td>
         </tr>
     <?php endforeach; ?>
@@ -20,6 +15,6 @@ fkasdjfk easklfaskld klafnsdklfnaskd
 <br/>
 
 <div>
-    <a href="/admin/pages/add/<?=$page['id']?>"><button class="btn btn-sm btn-success">New Page</button></a>
+    <a href="/admin/pages/add"><button class="btn btn-sm btn-success">New Page</button></a>
 </div>
 

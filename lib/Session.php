@@ -32,6 +32,14 @@ class Session
         }
     }
 
+    public static function has($key)
+    {
+        if (isset($_SESSION[$key])) {
+            return true;
+        }
+        return false;
+    }
+
     public static function delete($key)
     {
         if (isset($_SESSION[$key])) {

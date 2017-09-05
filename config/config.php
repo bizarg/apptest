@@ -1,5 +1,6 @@
 <?php
 
+Config::set('host_name', 'apptest.loc');
 Config::set('site_name', 'Your Site Name');
 
 Config::set('languages', ['en', 'ru']);
@@ -11,7 +12,7 @@ Config::set('routes', [
 
 Config::set('default_route', 'default');
 Config::set('default_language', 'en');
-Config::set('default_controller', 'pages');
+Config::set('default_controller', 'Pages');
 Config::set('default_action', 'index');
 
 Config::set('db_host', 'localhost');
