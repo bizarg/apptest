@@ -22,9 +22,17 @@ class ContactsController extends Controller
                 return false;
             }
 
-            if ($this->model->create($_POST)) {
+            $message = new Message();
+            $message->name = $_POST['name'];
+            $message->email = $_POST['email'];
+            $message->message = $_POST['message'];
+
+            if ($message->create($_POST)) {
                 Session::setFlash('Thank you! Your message was successfuly!');
+                Router::redirect('/contacts/');
             }
         }
+
+        return view('contacts.index');
     }
 }

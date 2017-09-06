@@ -10,6 +10,9 @@ class AdminContactsController extends Controller
 
     public function index()
     {
+
         $this->data = $this->model->getList();
+
+        return view('contacts.admin_index');
     }
 }

@@ -14,7 +14,10 @@ class PagesController extends Controller
 
     public function index()
     {
-        $this->data['pages'] = $this->model->getList();
+
+        $pages = $this->model->getList();
+
+        return view('pages.index', compact('pages'));
     }
 
     public function view()
@@ -23,7 +26,9 @@ class PagesController extends Controller
 
         if ( isset($params[0])) {
             $alias = strtolower($params[0]);
-            $this->data['page'] = $this->model->find($alias, 'alias');
+            $page = $this->model->find($alias, 'alias');
         }
+
+        return view('pages.view', compact('page'));
     }
 }

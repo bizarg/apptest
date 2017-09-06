@@ -1,3 +1,5 @@
+<?php include ROOT.DS."views".DS."header.php"?>
+
 <h3>Login</h3><br/>
 <form method="post" action="">
     <div class="form-group">
@@ -11,3 +13,5 @@
     </div>
     <input type="submit" class="btn btn-success">
 </form>
+
+<?php include ROOT.DS."views".DS."footer.php"?>

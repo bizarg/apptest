@@ -1,3 +1,6 @@
-<h1><?=$data['page']['title'];?></h1>
+<?php include ROOT.DS."views".DS."header.php"?>
 
-<p><?=$data['page']['content'];?></p>
+<h1><?=$data['page']->title;?></h1>
+<p><?=$data['page']->title;?></p>
+
+<?php include ROOT.DS."views".DS."footer.php"?>

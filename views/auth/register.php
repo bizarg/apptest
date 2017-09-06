@@ -1,4 +1,7 @@
+<?php include ROOT.DS."views".DS."header.php"?>
+
 <h3>Register</h3><br/>
+
 <form method="post" action="">
     <div class="form-group">
         <label for="login">Login</label>
@@ -7,7 +10,7 @@
 
     <div class="form-group">
         <label for="login">Email</label>
-        <input type="email" id="email" name="email" class="form-control" />
+        <input type="text" id="email" name="email" class="form-control" />
     </div>
 
     <div class="form-group">
@@ -22,3 +25,5 @@
 
     <input type="submit" class="btn btn-success">
 </form>
+
+<?php include ROOT.DS."views".DS."header.php"?>

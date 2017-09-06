@@ -1,7 +1,11 @@
+<?php include ROOT.DS."views".DS."admin_header.php"?>
+
 <h3>Images</h3><br/>
 
+
+
 <table class="table table-strioed" style="width: 400px">
-    <?php foreach ($data['images'] as $image) : ?>
+    <?php foreach ($images as $image) : ?>
         <tr>
             <td><b><?=$image->name?></b></td>
             <td>
@@ -18,3 +22,4 @@
     <a href="/admin/pages/add"><button class="btn btn-sm btn-success">New Page</button></a>
 </div>
 
+<?php include ROOT.DS."views".DS."footer.php"?>

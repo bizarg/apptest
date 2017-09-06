@@ -37,20 +37,25 @@ class App
             }
         }
 
-        $layout_path = VIEWS_PATH.DS.$layout.'.php';
+//        $layout_path = VIEWS_PATH.DS.$layout.'.php';
 //        dd($controller_class);
         $controller_object = new $controller_class();
 
         if (method_exists($controller_object, $controller_method)) {
-            $view_path = $controller_object->$controller_method();
-            $view_object = new View($controller_object->getData(), $view_path);
-            $content = $view_object->render();
+            $result = call_user_func_array([$controller_object, $controller_method], App::$router->getParams());
+
+            if ($result != null) {
+                throw new Exception('Method '. $controller_method. ' of class '.$controller_class. ' does not work.');
+            }
+//            $view_path = $controller_object->$controller_method();
+//            $view_object = new View($controller_object->getData(), $view_path);
+//            $content = $view_object->render();
         } else {
             throw new Exception('Method '. $controller_method. ' of class '.$controller_class. ' does not exist.');
         }
 
-        $layout_view_object = new View(compact('content'), $layout_path);
-
-        echo $layout_view_object->render();
+//        $layout_view_object = new View(compact('content'), $layout_path);
+//
+//        echo $layout_view_object->render();
     }
 }

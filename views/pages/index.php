@@ -1,3 +1,5 @@
+<?php include ROOT.DS."views".DS."header.php"?>
+
 <br>
 
 
@@ -18,10 +20,11 @@
 
 <br>
 
-<?php foreach($data['pages'] as $page) : ?>
+<?php foreach($pages as $page) : ?>
     <div style="margin-top: 20px">
         <a href="/pages/view/<?=$page->alias?>"><?=$page->title?></a>
     </div>
 
 <?php endforeach;?>
 
+<?php include ROOT.DS."views".DS."footer.php"?>

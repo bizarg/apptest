@@ -13,14 +13,31 @@ class AdminPagesController extends Controller
 
     public function index()
     {
-        $this->data['pages'] = $this->model->getList();
+        $pages = $this->model->getList();
+
+        return view('admin.index', compact('pages'));
     }
 
     public function edit()
     {
         if ($_POST) {
-            $id = isset($_POST['id']) ? $_POST['id'] : null;
-            $result = $this->model->update($_POST, $id);
+
+            $this->validate($_POST, [
+                'alias' => 'required',
+                'title' => 'required',
+            ]);
+
+            if($this->fail) {
+                Session::set('error', $this->error);
+                return Router::redirect("/admin/pages/edit/{$_POST['id']}");
+            }
+
+            $page = $this->model->find($_POST['id']);
+            $page->alias = $_POST['alias'];
+            $page->title = $_POST['title'];
+            $page->content = $_POST['content'];
+            $page->is_published =  $_POST['is_published'] ? 1 : 0;
+            $result = $page->update();
             if ($result) {
                 Session::setFlash('Page was saved');
             } else {
@@ -31,11 +48,14 @@ class AdminPagesController extends Controller
         }
 
         if (isset($this->params[0])) {
-            $this->data['page'] = $this->model->find(($this->params[0]));
+            $page = $this->model->find(($this->params[0]));
+
         } else {
             Session::setFlash('Wrong page id.');
             Router::redirect('/admin/pages/');
         }
+
+        return view('pages.admin_edit', compact('page'));
     }
 
     public function add()
@@ -49,6 +69,8 @@ class AdminPagesController extends Controller
             }
             Router::redirect('/admin/pages');
         }
+
+        return view('pages.admin_add');
     }
 
     public function delete()

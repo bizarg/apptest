@@ -1,4 +1,8 @@
+<?php include ROOT.DS."views".DS."admin_header.php"?>
+
+
 <h3>Add page</h3>
+
 <form action="/admin/pages/add" method="post">
     <div class="form-group">
         <label for="alias">Alias</label>
@@ -18,3 +22,5 @@
     </div>
     <input type="submit" class="btn btn-success" />
 </form>
+
+<?php include ROOT.DS."views".DS."footer.php"?>

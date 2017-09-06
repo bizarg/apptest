@@ -1,4 +1,7 @@
+<?php include ROOT.DS."views".DS."admin_header.php"?>
+
 <h3>Messages</h3>
+
 
 <table class="table tabel-striped" style="width: 100%;">
     <tr>
@@ -16,3 +19,5 @@
     </tr>
     <?php endforeach; ?>
 </table>
+
+<?php include ROOT.DS."views".DS."footer.php"?>

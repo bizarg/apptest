@@ -1,3 +1,6 @@
+<?php include ROOT.DS."views".DS."header.php"?>
+
+
 <h3>Contact us</h3>
 <form action="/contacts/" method="post">
     <input type="text" class="form-control" name="name" placeholder="Your Name" /><br/>
@@ -5,3 +8,7 @@
     <textarea  id="" class="form-control"  name="message" cols="" rows=""></textarea><br/>
     <button class="btn btn-lg btn-primary btn-block" type="submit" >Send</button>
 </form>
+
+
+
+<?php include ROOT.DS."views".DS."footer.php"?>

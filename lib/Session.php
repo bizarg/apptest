@@ -3,6 +3,7 @@
 class Session
 {
     protected static $flash_message;
+    public static $static = 0;
 
     public static function setFlash($message)
     {

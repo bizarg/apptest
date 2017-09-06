@@ -78,7 +78,7 @@ class Model
 
          if (!$this->db->input($sql)) return null;
 
-         return $this;
+        return true;
     }
 
 //    public function update($data, $params, $where = 'id', $sign = '=')

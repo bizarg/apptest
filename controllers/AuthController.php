@@ -11,10 +11,9 @@ class AuthController extends Controller
     public function login()
     {
         if ($_POST) {
-
             $this->validate($_POST, [
-                'login' => 'required',
-                'password' => 'required',
+                'login' => 'required|min:2|max:32',
+                'password' => 'required|password',
             ]);
 
             if($this->fail) {
@@ -22,16 +21,10 @@ class AuthController extends Controller
                 return Router::redirect('/auth/login');
             }
 
-            $user = $this->model->find($_POST['login'], 'login');
-
-            if (!$user) {
-                Session::set('error', ['Данный пользователь не найден']);
-                dd('user');
-                return Router::redirect('/auth/login/');
-            }
-
-            $user->signin($_POST);
+            $this->signin($_POST);
         }
+
+        return view('auth.login');
     }
 
     public function logout() {
@@ -42,26 +35,59 @@ class AuthController extends Controller
     public function register() {
 
         if ($_POST) {
+            $this->validate($_POST, [
+                'email' => 'required|email',
+                'login' => 'required|min:2|max:32',
+                'password' => 'required|password',
+                'second_password' => 'required|password',
+            ]);
+
+            if($this->fail) {
+                Session::set('error', $this->error);
+                return Router::redirect('/auth/register');
+            }
 
             $email = $this->model->find($_POST['email'], 'email');
             $login = $this->model->find($_POST['login'], 'login');
 
             if(!$email && !$login) {
                 if($_POST['password'] == $_POST['second_password']) {
-                    $_POST['password'] = md5(Config::get('salt') . $_POST['password']);
+                    $hash = md5(Config::get('salt') . $_POST['password']);
 
                         $user = new User();
                         $user->login = $_POST['login'];
                         $user->email = $_POST['email'];
-                        $user->password = $_POST['password'];
+                        $user->password = $hash;
 
-                    if ($user = $user->create()) {
-                        $user->signin($_POST);
+                    if ($user->create()) {
+                        $this->signin($_POST);
+                    } else {
+                        return Router::redirect('/auth/register');
                     }
                 }
             }
         }
+
+        return view('auth.register');
     }
 
+    private function signin($data)
+    {
+        $user = $this->model->find($data['login'], 'login');
 
+        if (!$user) {
+            Session::set('error', ['Данный пользователь не найден']);
+            return Router::redirect('/auth/login');
+        }
+
+        $hash = md5(Config::get('salt') . $data['password']);
+
+        if ($user->is_active && $hash == $user->password) {
+            Session::set('login', $user->login);
+            Session::set('role', $user->role);
+            if ($user->role == 'admin') return Router::redirect('/admin/pages');
+            return Router::redirect('/pages/index');
+        }
+
+    }
 }

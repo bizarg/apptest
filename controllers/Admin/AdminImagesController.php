@@ -12,7 +12,9 @@ class AdminImagesController extends Controller
     //page views/images/admin_index
     public function index()
     {
-        $this->data['images'] = $this->model->getList();
+        $images = $this->model->getList();
+
+        return view('images.admin_index', compact('images'));
     }
 
     //get /admin/images/edit
@@ -20,11 +22,13 @@ class AdminImagesController extends Controller
     public function edit()
     {
         if (isset($this->params[0])) {
-            $this->data['image'] = $this->model->find(($this->params[0]));
+            $image= $this->model->find(($this->params[0]));
         } else {
             Session::setFlash('Wrong page id.');
             Router::redirect('/admin/images/');
         }
+
+        return view('images.admin_edit', compact('image'));
     }
 
     //post /admin/images/update
@@ -34,12 +38,15 @@ class AdminImagesController extends Controller
         if ($_POST) {
 
             $this->validate($_POST, [
-                'name' => 'required',
+                'name' => 'required|min:2',
+                'link' => 'required|min:2',
+                'img' => 'required|min:2',
+                'position' => 'int',
             ]);
 
             if($this->fail) {
                 Session::set('error', $this->error);
-                Router::redirect('/admin/images');
+                return Router::redirect("/admin/images/edit/{$_POST['id']}");
             }
 
             $image = $this->model->find($_POST['id']);
@@ -50,7 +57,12 @@ class AdminImagesController extends Controller
             $image->is_published = $_POST['is_published'] = isset($_POST['is_published']) ? 1 : 0;
             $image->update();
 
-            Router::redirect('/admin/images/');
+            return Router::redirect('/admin/images/');
         }
+    }
+
+    public function add()
+    {
+        return view('images.admin_add');
     }
 }
