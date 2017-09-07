@@ -38,7 +38,11 @@ class DB
         $result = $this->conn->query($sql);
         if (!$result) return false;
 
-        return true;
+        $id = $this->conn->lastInsertId();
+
+        if ($id == 0) return true;
+
+        return $id;
     }
 
     private function __clone(){}

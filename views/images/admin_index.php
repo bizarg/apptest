@@ -5,7 +5,7 @@
 
 
 <table class="table table-strioed" style="width: 400px">
-    <?php foreach ($images as $image) : ?>
+    <?php foreach (checkArr($images) as $image) : ?>
         <tr>
             <td><b><?=$image->name?></b></td>
             <td>
@@ -19,7 +19,7 @@
 <br/>
 
 <div>
-    <a href="/admin/pages/add"><button class="btn btn-sm btn-success">New Page</button></a>
+    <a href="/admin/images/add"><button class="btn btn-sm btn-success">New Image</button></a>
 </div>
 
 <?php include ROOT.DS."views".DS."footer.php"?>

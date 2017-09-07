@@ -37,6 +37,7 @@
                 <ul class="nav navbar-nav">
                     <li><a <?php if(App::getRouter()->getController() == "AdminPages") {?> class='active' <?php } ;?> href='/admin/pages/'>Pages</a></li>
                     <li><a <?php if(App::getRouter()->getController() == "AdminImages") {?> class='active' <?php } ;?> href="/admin/images/">Images</a></li>
+                    <li><a <?php if(App::getRouter()->getController() == "AdminBanners") {?> class='active' <?php } ;?> href="/admin/banners/">Banners</a></li>
                     <li><a href="/auth/logout">Logout</a></li>
                 </ul>
             <?php endif; ?>
@@ -46,11 +47,8 @@
 
 <div class="container">
     <div class="starter-template">
-        <?php if (Session::hasFlash()) : ?>
-            <div class="alert alert-info" role="alert">
-                <?php Session::flash(); ?>
-            </div>
-        <?php endif; ?>
+
+
         <?php if (Session::has('error')) : ?>
         <div class="alert alert-danger" role="alert">
             <?php foreach (Session::get('error') as $error) : ?>
@@ -58,4 +56,22 @@
             <?php endforeach; ?>
             <?php Session::delete('error') ?>
         </div>
-<?php endif; ?>
+        <?php endif; ?>
+
+        <?php if (Session::has('fail')) : ?>
+            <div class="alert alert-danger" role="alert">
+
+                    <p><?=Session::get('fail')?></p>
+
+                <?php Session::delete('fail') ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (Session::has('success')) : ?>
+            <div class="alert alert-success" role="alert">
+
+                <p><?=Session::get('success')?></p>
+
+                <?php Session::delete('success') ?>
+            </div>
+        <?php endif; ?>

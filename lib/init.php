@@ -2,6 +2,8 @@
 
 require_once(ROOT . DS . 'config' . DS . 'config.php');
 
+//spl_autoload_register("__autoload");
+
 function __autoload($class_name) {
 
     $paths = [
@@ -33,6 +35,8 @@ function __autoload($class_name) {
     }
 }
 
+
+
 function __($key, $default_value = '') {
     return Lang::get($key, $default_value);
 }
@@ -47,7 +51,20 @@ function dump($value) {
 function view($value, $data = null){
     if ($data) extract($data);
 
+    include path($value,VIEWS_PATH).".php";
+}
+
+function path($value, $include = SITE) {
     $path = explode('.', $value);
 
-    include ROOT.DS."views".DS."{$path[0]}".DS."{$path[1]}.php";
+    for ($i = 0; $i < count($path); $i++) {
+        $include .= DS.$path[$i];
+    }
+    return $include;
+}
+
+function checkArr($var){
+    if(count($var)) return $var;
+
+    return $var = [];
 }

@@ -3,6 +3,11 @@
 
     <h3>Edit page</h3>
     <form action="/admin/images/create" method="post" enctype="multipart/form-data">
+
+        <?php if (isset($banner_id)) : ?>
+        <input type="hidden" value="<?=$banner_id?>" name="banner_id">
+        <?php endif; ?>
+
         <div class="form-group">
             <label for="alias">image</label>
             <input type="file" id="title" name="link" value="" class="form-control" multiple/>

@@ -61,8 +61,48 @@ class AdminImagesController extends Controller
         }
     }
 
-    public function add()
+    public function add($banner_id = null)
     {
-        return view('images.admin_add');
+        return view('images.admin_add', compact($banner_id));
+    }
+
+    public function create()
+    {
+
+        if ($_POST) {
+
+            $this->validate($_POST, [
+                'name' => 'required|min:2',
+                'link' => 'required|min:2',
+                'img' => 'required|min:2',
+                'position' => 'int',
+            ]);
+
+
+            if($this->fail) {
+                Session::set('error', $this->error);
+                return Router::redirect("/admin/images/edit/{$_POST['id']}");
+            }
+
+
+            $image = new Image();
+            $image->name = $_POST['name'];
+            $image->link = $_POST['link'];
+            $image->img = $_POST['img'];
+            $image->position = $_POST['position'];
+            $image->is_published = $_POST['is_published'] = isset($_POST['is_published']) ? 1 : 0;
+
+            if ($_POST['banner_id']) {
+                $image->banner_id = $_POST['banner_id'];
+            }
+
+            if ($image->create()) {
+                Session::setFlash('Image created successfuly');
+            } else {
+                Session::setFlash('Image was not created');
+            }
+
+            Router::redirect('/admin/images');
+        }
     }
 }

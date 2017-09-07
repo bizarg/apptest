@@ -3,7 +3,7 @@
 class Session
 {
     protected static $flash_message;
-    public static $static = 0;
+    protected static $fail = [];
 
     public static function setFlash($message)
     {
@@ -17,13 +17,23 @@ class Session
 
     public static function flash()
     {
-        echo self::$flash_message;
-        self::$flash_message = null;
+        return self::$flash_message;
+//        self::$flash_message = null;
     }
 
     public static function set($key, $value)
     {
         $_SESSION[$key] = $value;
+    }
+
+    public static function setFail($key, $value)
+    {
+        self::$fail[$key] = $value;
+    }
+
+    public static function getFail($key)
+    {
+        echo self::$fail[$key];
     }
 
     public static function get($key)

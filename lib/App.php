@@ -6,6 +6,8 @@ class App
 
     public static $db;
 
+    public static $uri;
+
     /**
      * @return mixed
      */
@@ -19,6 +21,8 @@ class App
         self::$router = new Router($uri);
 
         self::$db = DB::getInstance();
+
+        self::$uri = self::$router->getUri();
 
         Lang::load(self::$router->getLanguage());
 

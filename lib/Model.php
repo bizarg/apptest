@@ -6,6 +6,7 @@ class Model
     protected $table;
     protected $db;
     protected $class;
+    protected $relations = [];
 
     public function __construct()
     {
@@ -26,13 +27,25 @@ class Model
         return $this;
     }
 
+    public function findOrFail($params, $where = 'id', $sign = '=' )
+    {
+        $result = $this->find($params, $where, $sign);
+
+        if (!$result) {
+            throw new Exception('Данного объекта не существует');
+        }
+        return $result;
+    }
+
     public function getWhere($params, $where = 'id', $sign = '=' ) {
         if($where === 'id') $params = (int)$params;
 
         $sql = "SELECT * FROM {$this->table} WHERE {$where} {$sign} '{$params}'";
         $result = $this->db->get($sql);
 
-        return isset($result) ? $result : null;
+        if (!isset($result) || !count($result)) return null;
+
+        return $this->collection($result, $this->class);
     }
 
     public function getList($only_published = false)
@@ -45,25 +58,41 @@ class Model
 
         if (!isset($result) || !count($result)) return null;
 
-        $collection = [];
-
-        for ($i = 0; $i < count($result); $i++) {
-            $collection[$i] = new $this->class();
-
-            foreach ($collection[$i]->fillable as $field) {
-                $collection[$i]->$field = $result[$i][$field];
-            }
-        }
-
-        return $collection;
+        return $this->collection($result, $this->class);
     }
 
-    public function delete($params, $where = 'id', $sign = '=' )
+    public function delete(/*$params, $where = 'id', $sign = '=' */)
     {
-        if($where === 'id') $params = (int)$params;
-
-        $sql = "DELETE FROM {$this->table} WHERE {$where} {$sign} '{$params}'";
+        $sql = "DELETE FROM {$this->table} WHERE id={$this->id}";
         return $this->db->input($sql);
+//        if($where === 'id') $params = (int)$params;
+//
+//        $sql = "DELETE FROM {$this->table} WHERE {$where} {$sign} '{$params}'";
+//        return $this->db->input($sql);
+    }
+
+
+
+    public function destroy()
+    {
+        if (count($this->relations)) {
+
+            foreach ($this->relations as $relate) {
+                $this->deleteRelate($this->$relate());
+            }
+        }
+        return $this->delete();
+    }
+
+    protected function deleteRelate($value)
+    {
+        return $value;
+        if (is_array($value)) {
+            foreach($value as $val) {
+                $val->delete();
+            }
+        }
+        return $value->delete();
     }
 
     public function create()
@@ -76,9 +105,11 @@ class Model
 
         $sql = substr($sql, 0, -2);
 
-         if (!$this->db->input($sql)) return null;
+        $result = $this->db->input($sql);
 
-        return true;
+         if (!$result) return null;
+
+        return $result;
     }
 
 //    public function update($data, $params, $where = 'id', $sign = '=')
@@ -115,5 +146,28 @@ class Model
     public function __set($name, $value)
     {
         $this->$name = $value;
+    }
+
+    protected function collection($arr, $class)
+    {
+        $collection = [];
+        for ($i = 0; $i < count($arr); $i++) {
+            $collection[$i] = new $class();
+
+            foreach ($collection[$i]->fillable as $field) {
+                $collection[$i]->$field = $arr[$i][$field];
+            }
+        }
+        return $collection;
+    }
+
+    protected function hasMany($model, $key)
+    {
+        return (new $model())->getWhere($this->id, $key);
+    }
+
+    protected function hasOne($model, $key)
+    {
+        return (new $model())->find($key);
     }
 }

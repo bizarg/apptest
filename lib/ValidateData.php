@@ -27,21 +27,25 @@ trait ValidateData
                 }
 
                 if (strstr($item, 'min')){
-                    $int = explode(':', $item);
-                    if ($int[0] == 'min') {
+                    if (!empty($data[$name])) {
+                        $int = explode(':', $item);
+                        if ($int[0] == 'min') {
 //                        dd($int[1]);
-                        if ($int[1] > strlen($data[$name])) {
-                            $this->error[$name] = (isset($message[$name])) ? $message[$name] : "Поле {$name} должна быть не менее {$int[1]} символов";
+                            if ($int[1] > strlen($data[$name])) {
+                                $this->error[$name] = (isset($message[$name])) ? $message[$name] : "Поле {$name} должна быть не менее {$int[1]} символов";
+                            }
                         }
                     }
                 }
 
                 if (strstr($item, 'max')){
-                    $int = explode(':', $item);
+                    if (!empty($data[$name])) {
+                        $int = explode(':', $item);
 
-                    if ($int[0] == 'max') {
-                        if ($int[1] < strlen($data[$name])) {
-                            $this->error[$name] = (isset($message[$name])) ? $message[$name] : "Поле {$name} должна быть не более {$int[1]} символов";
+                        if ($int[0] == 'max') {
+                            if ($int[1] < strlen($data[$name])) {
+                                $this->error[$name] = (isset($message[$name])) ? $message[$name] : "Поле {$name} должна быть не более {$int[1]} символов";
+                            }
                         }
                     }
                 }
@@ -67,8 +71,8 @@ trait ValidateData
                     }
                 }
                 if($item == 'int') {
-                    if (!empty($data['name'])) {
-                        if (!is_int($data['name'])) {
+                    if (!empty($data[$name])) {
+                        if (!preg_match('/^[0-9]{1,}$/', $data[$name])) {
                             $this->error[$name] = (isset($message[$name])) ? $message[$name] : "В поле {$name} должно быть только числовое значение";
                         }
                     }
