@@ -2,23 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f588ba7-fa5a-4991-a7ce-b9aa5bfedf64" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/controllers/Admin/AdminBannersController.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/models/Banner.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/banners/admin_add.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/banners/admin_edit.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/banners/admin_index.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/Admin/AdminImagesController.php" afterPath="$PROJECT_DIR$/controllers/Admin/AdminImagesController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/App.php" afterPath="$PROJECT_DIR$/lib/App.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/Db.php" afterPath="$PROJECT_DIR$/lib/Db.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/Model.php" afterPath="$PROJECT_DIR$/lib/Model.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/Session.php" afterPath="$PROJECT_DIR$/lib/Session.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/ValidateData.php" afterPath="$PROJECT_DIR$/lib/ValidateData.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/init.php" afterPath="$PROJECT_DIR$/lib/init.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/Image.php" afterPath="$PROJECT_DIR$/models/Image.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/admin_header.php" afterPath="$PROJECT_DIR$/views/admin_header.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/images/admin_add.php" afterPath="$PROJECT_DIR$/views/images/admin_add.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/images/admin_index.php" afterPath="$PROJECT_DIR$/views/images/admin_index.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -43,7 +28,7 @@
       <file leaf-file-name="AdminBannersController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/Admin/AdminBannersController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
+            <state relative-caret-position="396">
               <caret line="43" column="42" lean-forward="false" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
               <folding />
             </state>
@@ -53,8 +38,8 @@
       <file leaf-file-name="Model.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/Model.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="67" column="38" lean-forward="true" selection-start-line="67" selection-start-column="38" selection-end-line="67" selection-end-column="38" />
+            <state relative-caret-position="175">
+              <caret line="133" column="20" lean-forward="false" selection-start-line="133" selection-start-column="20" selection-end-line="133" selection-end-column="20" />
               <folding>
                 <marker date="1504793026026" expanded="true" signature="357:392" ph="SELECT * FRO... $" />
                 <marker date="1504793026026" expanded="true" signature="357:426" ph="SELECT * FRO... $" />
@@ -88,11 +73,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="admin_header.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="admin_header.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/admin_header.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="547">
+            <state relative-caret-position="1087">
               <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Router.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/Router.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="247">
+              <caret line="61" column="5" lean-forward="false" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AdminImagesController.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/controllers/Admin/AdminImagesController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="453">
+              <caret line="57" column="0" lean-forward="true" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -166,7 +171,6 @@
         <option value="$PROJECT_DIR$/controllers/Admin/AdminPagesController.php" />
         <option value="$PROJECT_DIR$/views/images/admin_edit.php" />
         <option value="$PROJECT_DIR$/lib/App.php" />
-        <option value="$PROJECT_DIR$/lib/Router.php" />
         <option value="$PROJECT_DIR$/views/banners/admin_index.php" />
         <option value="$PROJECT_DIR$/models/Image.php" />
         <option value="$PROJECT_DIR$/models/Banner.php" />
@@ -176,13 +180,14 @@
         <option value="$PROJECT_DIR$/views/banners/admin_edit.php" />
         <option value="$PROJECT_DIR$/views/images/admin_index.php" />
         <option value="$PROJECT_DIR$/lib/ValidateData.php" />
-        <option value="$PROJECT_DIR$/controllers/Admin/AdminImagesController.php" />
         <option value="$PROJECT_DIR$/views/header.php" />
         <option value="$PROJECT_DIR$/lib/Db.php" />
         <option value="$PROJECT_DIR$/lib/Model.php" />
         <option value="$PROJECT_DIR$/lib/Session.php" />
         <option value="$PROJECT_DIR$/controllers/Admin/AdminBannersController.php" />
         <option value="$PROJECT_DIR$/views/admin_header.php" />
+        <option value="$PROJECT_DIR$/lib/Router.php" />
+        <option value="$PROJECT_DIR$/controllers/Admin/AdminImagesController.php" />
       </list>
     </option>
   </component>
@@ -578,12 +583,12 @@
       <workItem from="1504613022308" duration="1986000" />
       <workItem from="1504615651904" duration="5567000" />
       <workItem from="1504682212625" duration="29793000" />
-      <workItem from="1504773909766" duration="18714000" />
+      <workItem from="1504773909766" duration="19287000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="152937000" />
+    <option name="totallyTimeSpent" value="153510000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="9" y="26" width="1368" height="710" extended-state="0" />
@@ -907,14 +912,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/Router.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-288">
-          <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/App.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-663">
@@ -981,14 +978,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/Admin/AdminImagesController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="417">
-          <caret line="104" column="46" lean-forward="true" selection-start-line="104" selection-start-column="46" selection-end-line="104" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/Db.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="313">
@@ -1013,10 +1002,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/views/banners/admin_add.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="65" lean-forward="false" selection-start-line="7" selection-start-column="54" selection-end-line="7" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Session.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="35" column="29" lean-forward="false" selection-start-line="35" selection-start-column="25" selection-end-line="35" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/admin_header.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1087">
+          <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Router.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="61" column="5" lean-forward="false" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/Model.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="67" column="38" lean-forward="true" selection-start-line="67" selection-start-column="38" selection-end-line="67" selection-end-column="38" />
+        <state relative-caret-position="175">
+          <caret line="133" column="20" lean-forward="false" selection-start-line="133" selection-start-column="20" selection-end-line="133" selection-end-column="20" />
           <folding>
             <marker date="1504793026026" expanded="true" signature="357:392" ph="SELECT * FRO... $" />
             <marker date="1504793026026" expanded="true" signature="357:426" ph="SELECT * FRO... $" />
@@ -1039,34 +1060,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/banners/admin_add.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="65" lean-forward="false" selection-start-line="7" selection-start-column="54" selection-end-line="7" selection-end-column="65" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/Session.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="35" column="29" lean-forward="false" selection-start-line="35" selection-start-column="25" selection-end-line="35" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/Admin/AdminBannersController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
+        <state relative-caret-position="396">
           <caret line="43" column="42" lean-forward="false" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/admin_header.php">
+    <entry file="file://$PROJECT_DIR$/controllers/Admin/AdminImagesController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="547">
-          <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+        <state relative-caret-position="453">
+          <caret line="57" column="0" lean-forward="true" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
           <folding />
         </state>
       </provider>

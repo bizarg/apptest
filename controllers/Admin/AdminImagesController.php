@@ -55,7 +55,12 @@ class AdminImagesController extends Controller
             $image->img = $_POST['img'];
             $image->position = $_POST['position'];
             $image->is_published = $_POST['is_published'] = isset($_POST['is_published']) ? 1 : 0;
-            $image->update();
+
+            if ($image->update()) {
+                Session::set('success', 'Image updated successfuly');
+            } else {
+                Session::set('fail', 'Image was not updated');
+            }
 
             return Router::redirect('/admin/images/');
         }
@@ -79,10 +84,12 @@ class AdminImagesController extends Controller
             ]);
 
 
+
             if($this->fail) {
                 Session::set('error', $this->error);
-                return Router::redirect("/admin/images/edit/{$_POST['id']}");
+                return Router::redirect("/admin/images/add");
             }
+
 
 
             $image = new Image();
@@ -97,9 +104,9 @@ class AdminImagesController extends Controller
             }
 
             if ($image->create()) {
-                Session::setFlash('Image created successfuly');
+                Session::set('success', 'Image created successfuly');
             } else {
-                Session::setFlash('Image was not created');
+                Session::set('fail', 'Image was not created');
             }
 
             Router::redirect('/admin/images');
