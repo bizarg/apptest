@@ -170,4 +170,23 @@ class Model
     {
         return (new $model())->find($key);
     }
+
+    public function sync($array, $relate, $sign)
+    {
+        foreach ($array as $id) {
+            $objects = $this->$relate();
+
+            foreach ($objects as $object) {
+                if(!in_array($object->id, $array)) {
+                    $object->$sign = null;
+                    $object->update();
+                }
+            }
+
+            $newObject = new $object->class();
+            $newObject = $newObject->find($id);
+            $newObject->$sign = $id;
+            $newObject->update();
+        }
+    }
 }

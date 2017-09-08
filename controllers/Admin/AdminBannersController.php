@@ -76,13 +76,59 @@ class AdminBannersController extends Controller
 
     }
 
+    public function update($id)
+    {
+        if ($_POST)
+        {
+            $banner = $this->model->findOrFail($id);
+
+            $this->validate($_POST, ['name_banner' => 'required']);
+
+            if ($this->fail) {
+                Session::set('error', $this->error);
+                return Router::redirect('/admin/banners/add');
+            }
+
+            $banner->name = $_POST['name_banner'];
+            if ($banner->update()) {
+                if ($_POST['images']) {
+
+                    $banner->sync($_POST['images'], 'images', 'banner_id');
+
+
+//                    foreach ($_POST['images'] as $image_id) {
+//
+//
+//                        $images = $banner->images();
+//
+//                        foreach ($images as $img) {
+//                            if(!in_array($img->id, $_POST['images'])) {
+//                                $img->banner_id = null;
+//                                $img->update();
+//                            }
+//                        }
+//
+//                        $image = new Image();
+//                        $image = $image->find($image_id);
+//                        $image->banner_id = $id;
+//                        $image->update();
+//                    }
+                }
+                return Router::redirect('/admin/banners/');
+            } else {
+                Session::set('fail', 'Banner was not update');
+                return Router::redirect("/admin/banners/edit/{$id}");
+            }
+        }
+    }
+
     public function delete($id)
     {
         if ($id) {
             if ($this->model->findOrFail($id)->destroy()) {
-                Session::set('success', 'Banneer was deleted');
+                Session::set('success', 'Banner was deleted');
             } else {
-                Session::set('fail', 'Error was not deleted');
+                Session::set('fail', 'Banner was not deleted');
             }
         }
 

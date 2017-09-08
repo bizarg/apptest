@@ -18,6 +18,8 @@ class App
 
     public static function run($uri)
     {
+        Session::setUri($uri);
+//        dd(Session::getUri());
         self::$router = new Router($uri);
 
         self::$db = DB::getInstance();

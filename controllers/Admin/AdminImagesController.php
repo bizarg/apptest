@@ -8,8 +8,6 @@ class AdminImagesController extends Controller
         $this->model = new Image();
     }
 
-    //get /admin/images/index
-    //page views/images/admin_index
     public function index()
     {
         $images = $this->model->getList();
@@ -17,22 +15,13 @@ class AdminImagesController extends Controller
         return view('images.admin_index', compact('images'));
     }
 
-    //get /admin/images/edit
-    //page views/images/admin_edit
-    public function edit()
+    public function edit($id)
     {
-        if (isset($this->params[0])) {
-            $image= $this->model->find(($this->params[0]));
-        } else {
-            Session::setFlash('Wrong page id.');
-            Router::redirect('/admin/images/');
-        }
+        $image = $this->model->findOrFail($id);
 
         return view('images.admin_edit', compact('image'));
     }
 
-    //post /admin/images/update
-    //redirect /admin/images/index
     public function update()
     {
         if ($_POST) {
@@ -85,12 +74,10 @@ class AdminImagesController extends Controller
 
 
 
-            if($this->fail) {
+            if ($this->fail) {
                 Session::set('error', $this->error);
                 return Router::redirect("/admin/images/add");
             }
-
-
 
             $image = new Image();
             $image->name = $_POST['name'];

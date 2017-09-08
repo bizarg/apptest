@@ -3,7 +3,17 @@
 class Session
 {
     protected static $flash_message;
-    protected static $fail = [];
+
+
+    public static function setUri($uri)
+    {
+        $_SESSION['uri'][] = $uri;
+    }
+
+    public static function getUri()
+    {
+        return $_SESSION['uri'][count($_SESSION['uri'])-3];
+    }
 
     public static function setFlash($message)
     {
