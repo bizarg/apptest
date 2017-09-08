@@ -7,9 +7,14 @@ class Image extends Model
     protected $fillable = ['id', 'name', 'img', 'link', 'is_published', 'position', 'banner_id'];
     protected $relations = ['banners'];
 
-    public function banner()
+//    public function banner()
+//    {
+//        $this->banner = $this->hasOne('Banner', 'banner_id');
+//        return $this;
+//    }
+    public function banners()
     {
-        $this->banner = $this->hasOne('Banner', 'banner_id');
+        $this->banners = $this->hasManyToMany('BannerImage', 'image_id');
         return $this;
     }
 }

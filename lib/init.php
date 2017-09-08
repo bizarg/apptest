@@ -64,7 +64,7 @@ function path($value, $include = SITE) {
 }
 
 function checkArr($var){
-    if(count($var)) return $var;
+    if(count($var) && isset($var)) return $var;
 
     return $var = [];
 }

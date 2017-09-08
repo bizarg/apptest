@@ -29,7 +29,27 @@ class DB
         if($this->conn === null) $this->initConnect();
 
         $result = $this->conn->query($sql);
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+        $array = $result->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($array) > 1) {
+            $collection = [];
+            foreach ($array as $key => $item) {
+                foreach ($item as $key => $value) {
+                    $this->$key = $value;
+                }
+                $collection[] = $this;
+            }
+            dd($collection);
+            return $collection;
+        } else {
+            foreach ($array as $key => $item) {
+                foreach ($item as $key => $value) {
+                    $this->$key = $value;
+                }
+            }
+            dd($this);
+            return $this;
+        }
     }
 
     public function input($sql)

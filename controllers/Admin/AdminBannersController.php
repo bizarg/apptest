@@ -12,8 +12,8 @@ class AdminBannersController extends Controller
     {
         $banners = $this->model->getList();
 
-        foreach (checkArr($banners) as &$banner) {
-            $banner->images = $banner->images();
+        foreach (checkArr($banners) as $banner) {
+            $banner->images();
         }
 
         return view('banners.admin_index', compact('banners'));
@@ -45,22 +45,6 @@ class AdminBannersController extends Controller
             }
 
             return Router::redirect('/admin/banners');
-
-//            if (isset($_POST['name'])) {
-//
-//                foreach ($_POST['name'] as $key => $item) {
-//                    $image = new Image();
-//                    $image->name = $item;
-//                    $image->img = $_POST['img'][$key];
-//                    $image->link = $_POST['link'][$key];
-//                    $image->position = $_POST['position'][$key];
-//                    $image->is_published = $_POST['is_published'][$key] ? 1 : 0;
-//                    $image->banner_id = $banner_id;
-//                    $image->create();
-//                }
-
-//        }
-//            return Router::redirect('/admin/banners');
         }
     }
 
@@ -69,17 +53,14 @@ class AdminBannersController extends Controller
         $images = new Image();
         $images = $images->getList();
 
-        $banner = $this->model->findOrFail($id);
-        $banner->images();
+        $banner = $this->model->findOrFail($id)->images();
 
         return view('banners.admin_edit', compact('images', 'banner'));
-
     }
 
     public function update($id)
     {
-        if ($_POST)
-        {
+        if ($_POST) {
             $banner = $this->model->findOrFail($id);
 
             $this->validate($_POST, ['name_banner' => 'required']);
@@ -90,31 +71,13 @@ class AdminBannersController extends Controller
             }
 
             $banner->name = $_POST['name_banner'];
+
             if ($banner->update()) {
-                if ($_POST['images']) {
 
-                    $banner->sync($_POST['images'], 'images', 'banner_id');
-
-
-//                    foreach ($_POST['images'] as $image_id) {
-//
-//
-//                        $images = $banner->images();
-//
-//                        foreach ($images as $img) {
-//                            if(!in_array($img->id, $_POST['images'])) {
-//                                $img->banner_id = null;
-//                                $img->update();
-//                            }
-//                        }
-//
-//                        $image = new Image();
-//                        $image = $image->find($image_id);
-//                        $image->banner_id = $id;
-//                        $image->update();
-//                    }
-                }
+                $data = isset($_POST['images']) ? $_POST['images'] : [];
+                $banner->sync($data, new BannerImage(),'images', 'banner_id');
                 return Router::redirect('/admin/banners/');
+
             } else {
                 Session::set('fail', 'Banner was not update');
                 return Router::redirect("/admin/banners/edit/{$id}");

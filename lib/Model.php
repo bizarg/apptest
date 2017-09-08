@@ -7,13 +7,14 @@ class Model
     protected $db;
     protected $class;
     protected $relations = [];
+    protected $sql;
 
     public function __construct()
     {
         $this->db = App::$db;
     }
 
-    public function find($params, $where = 'id', $sign = '=' ) {
+    public function find($params, $where = 'id', $sign = '=') {
         if($where === 'id') $params = (int)$params;
 
         $sql = "SELECT * FROM {$this->table} WHERE {$where}{$sign}'{$params}' LIMIT 1";
@@ -61,14 +62,10 @@ class Model
         return $this->collection($result, $this->class);
     }
 
-    public function delete(/*$params, $where = 'id', $sign = '=' */)
+    public function delete()
     {
         $sql = "DELETE FROM {$this->table} WHERE id={$this->id}";
         return $this->db->input($sql);
-//        if($where === 'id') $params = (int)$params;
-//
-//        $sql = "DELETE FROM {$this->table} WHERE {$where} {$sign} '{$params}'";
-//        return $this->db->input($sql);
     }
 
 
@@ -105,31 +102,8 @@ class Model
 
         $sql = substr($sql, 0, -2);
 
-        $result = $this->db->input($sql);
-
-         if (!$result) return null;
-
-        return $result;
+        return $this->db->input($sql);
     }
-
-//    public function update($data, $params, $where = 'id', $sign = '=')
-//    {
-//        if ($where == 'id') $params = (int)$params;
-//
-//        if (in_array('is_published', $this->fillable)) {
-//            $data['is_published'] = isset($data['is_published']) ? 1 : 0;
-//        }
-//
-//        $sql = "UPDATE {$this->table} SET ";
-//        foreach ($this->fillable as $field) {
-//            if(!isset($data[$field])) continue;
-//            $sql .= "{$field}='{$data[$field]}', ";
-//        }
-//        $sql = substr($sql, 0, -2);
-//        $sql .= " WHERE {$where}{$sign}{$params}";
-//
-//        return $this->db->input($sql);
-//    }
 
     public function update()
     {
@@ -166,27 +140,144 @@ class Model
         return (new $model())->getWhere($this->id, $key);
     }
 
+    protected function hasManyToMany($model, $field)
+    {
+        $relate_table = new $model();
+
+        $list = $relate_table->getWhere($this->id, $field);
+
+        unset($relate_table->relations[$field]);
+
+        $new_class = array_values($relate_table->relations)[0];
+        $new_field = array_keys($relate_table->relations)[0];
+        $newmodel = new $new_class();
+
+        if (count($list)) {
+            $arr = [];
+
+            foreach ($list as $l) {
+                $arr[] = $l->$new_field;
+            }
+
+            $str = implode(',', $arr);
+
+            $images = $newmodel->findIn($str);
+
+            return $images;
+        }
+
+        return null;
+    }
+
+    public function findIn($str) {
+
+        $sql = "SELECT * FROM {$this->table} WHERE id in ({$str})";
+        $result = $this->db->get($sql);
+
+        if (!isset($result) || !count($result)) return null;
+
+        return $this->collection($result, $this->class);
+    }
+
     protected function hasOne($model, $key)
     {
         return (new $model())->find($key);
     }
 
-    public function sync($array, $relate, $sign)
+    public function sync($array, $model, $relate, $sign)
     {
-        foreach ($array as $id) {
-            $objects = $this->$relate();
+        $this->$relate();
 
-            foreach ($objects as $object) {
+        $newmodel = new $model();
+        unset($newmodel->relations[$sign]);
+        $new_field = array_keys($newmodel->relations)[0];
+
+        if (count($this->$relate)) {
+            foreach ($this->$relate as $object) {
+                $newmodel = new $model();
                 if(!in_array($object->id, $array)) {
-                    $object->$sign = null;
-                    $object->update();
+                    $banner_image = $newmodel->find($object->id, $new_field);
+                    $banner_image->delete();
                 }
             }
-
-            $newObject = new $object->class();
-            $newObject = $newObject->find($id);
-            $newObject->$sign = $id;
-            $newObject->update();
         }
+
+        foreach ($array as $id) {
+            $newmodel = new $model();
+
+            $banner_image = $newmodel->find($id, $sign);
+
+
+            if (!$banner_image) {
+                $newmodel = new $model();
+                $newmodel->$sign = $this->id;
+                $newmodel->$new_field = $id;
+                $newmodel->create();
+            } else {
+                if ($banner_image->$sign == $this->id && $banner_image->$new_field == $id) {
+
+                } else {
+                    $newmodel = new $model();
+                    $newmodel->$sign = $this->id;
+                    $newmodel->$new_field = $id;
+                    $newmodel->create();
+                }
+            }
+        }
+    }
+
+    public function getKey($array)
+    {
+        $key = [];
+        foreach (checkArr($array) as $item) {
+            $key[] = $item->id;
+        }
+
+        return $key;
+    }
+//    --------------------------------------------------------------
+    public function andWhere($params, $where = 'id', $sign = '=')
+    {
+        $this->sql .= " AND {$where}{$sign}{$params}";
+        return $this;
+    }
+
+    public function orWhere($params, $where = 'id', $sign = '=')
+    {
+        $this->sql .= " OR {$where}{$sign}{$params}";
+        return $this;
+    }
+
+    public function where($params, $where = 'id', $sign = '=')
+    {
+        $this->sql .= " WHERE {$where}{$sign}'{$params}'";
+        return $this;
+    }
+
+    public function whereIn($str, $where)
+    {
+        $this->sql .= " WHERE {$where} in ($str)";
+        return $this;
+    }
+
+    public function select($column = '*')
+    {
+        $this->sql .= "SELECT {$column} FROM {$this->table}";
+        return $this;
+    }
+
+    public function get()
+    {
+        return $this->db->get($this->sql);
+    }
+
+    public function one($id)
+    {
+        return $this->db->get("SELECT * FROM {$this->table} WHERE id={$id} LIMIT 1");
+    }
+
+    public function all()
+    {
+        return $this->db->get("SELECT * FROM {$this->table}");
     }
 }

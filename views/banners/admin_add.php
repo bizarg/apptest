@@ -1,7 +1,7 @@
 <?php include ROOT.DS."views".DS."admin_header.php"?>
 
 
-    <h3>Edit page</h3>
+    <h3>New Banner</h3>
     <form action="<?=path('admin.banners.create')?>" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="name_banner">Banner Name</label>

@@ -10,8 +10,9 @@
 
         <div class="form-group">
             <select name="images[]" id="" multiple class="form-control">
+
                 <?php foreach (checkArr($images) as $image) : ?>
-                    <option value="<?=$image->id?>" <?php if ($image->banner_id == $banner->id) :?>selected<?php endif;?>><?=$image->name?></option>
+                    <option value="<?=$image->id?>" <?php if (in_array($image->id, $banner->getKey(@$banner->images))) :?>selected<?php endif;?>><?=$image->name?></option>
                 <?php endforeach; ?>
             </select>
         </div>
