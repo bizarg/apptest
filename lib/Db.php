@@ -27,30 +27,14 @@ class DB
     public function get($sql)
     {
         if($this->conn === null) $this->initConnect();
-
         $result = $this->conn->query($sql);
-        $array = $result->fetchAll(PDO::FETCH_ASSOC);
 
-        if (count($array) > 1) {
-            $collection = [];
-            foreach ($array as $key => $item) {
-                foreach ($item as $key => $value) {
-                    $this->$key = $value;
-                }
-                $collection[] = $this;
-            }
-            dd($collection);
-            return $collection;
-        } else {
-            foreach ($array as $key => $item) {
-                foreach ($item as $key => $value) {
-                    $this->$key = $value;
-                }
-            }
-            dd($this);
-            return $this;
-        }
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+
+
 
     public function input($sql)
     {
@@ -60,9 +44,7 @@ class DB
 
         $id = $this->conn->lastInsertId();
 
-        if ($id == 0) return true;
-
-        return $id;
+        return ($id == 0) ? true : $id;
     }
 
     private function __clone(){}

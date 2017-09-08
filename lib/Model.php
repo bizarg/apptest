@@ -238,46 +238,101 @@ class Model
 //    --------------------------------------------------------------
     public function andWhere($params, $where = 'id', $sign = '=')
     {
-        $this->sql .= " AND {$where}{$sign}{$params}";
+        $this->sql .= " AND {$where}{$sign}'{$params}' ";
         return $this;
     }
 
     public function orWhere($params, $where = 'id', $sign = '=')
     {
-        $this->sql .= " OR {$where}{$sign}{$params}";
+        $this->sql .= " OR {$where}{$sign}'{$params}' ";
         return $this;
     }
 
     public function where($params, $where = 'id', $sign = '=')
     {
-        $this->sql .= " WHERE {$where}{$sign}'{$params}'";
+        $this->sql .= " WHERE {$where}{$sign}'{$params}' ";
         return $this;
     }
 
     public function whereIn($str, $where)
     {
-        $this->sql .= " WHERE {$where} in ($str)";
+        $this->sql .= " WHERE {$where} in ('$str') ";
         return $this;
     }
 
     public function select($column = '*')
     {
-        $this->sql .= "SELECT {$column} FROM {$this->table}";
+        $this->sql .= "SELECT " . $column . " FROM {$this->table} ";
         return $this;
     }
 
     public function get()
     {
-        return $this->db->get($this->sql);
+        return $this->getCollection($this->db->get($this->sql));
+    }
+
+    public function getOne()
+    {
+        return $this->getModel($this->db->get($this->sql));
     }
 
     public function one($id)
     {
-        return $this->db->get("SELECT * FROM {$this->table} WHERE id={$id} LIMIT 1");
+        return $this->getModel($this->db->get("SELECT * FROM {$this->table} WHERE id={$id} LIMIT 1 "));
     }
 
     public function all()
     {
-        return $this->db->get("SELECT * FROM {$this->table}");
+        return $this->getCollection($this->db->get("SELECT * FROM {$this->table}"));
     }
+
+    public function orderBy($column, $sort = 'DESC')
+    {
+        $this->sql .= " ORDER BY {$column} {$sort} ";
+    }
+
+    public function groupBy($column)
+    {
+        $this->sql .= " GROUP BY {$column} ";
+    }
+
+    public function having($column, $params, $sign = '=')
+    {
+        $this->sql .= " HAVING {$column}{$sign}'{$params}' ";
+    }
+
+    public function innerJoin($table)
+    {
+        $this->sql .= "SELECT * FROM {$this->table} INNER JOIN {$table} ON {$this->table}.id={$table}.id ";
+    }
+
+    public function addJoin($table1, $table2)
+    {
+        $this->sql .= " INNER JOIN $table1 ON {$table1}.id={$table2}.id ";
+    }
+
+    public function getModel($array)
+    {
+        foreach ($array as $key => $item) {
+            foreach ($item as $key => $value) {
+                $this->$key = $value;
+            }
+        }
+        return $this;
+    }
+
+    public function getCollection($array)
+    {
+        $collection = [];
+        for ($i = 0; $i < count($array); $i++) {
+            $collection[$i] = new $this->class();
+
+            foreach ($collection[$i]->fillable as $field) {
+                $collection[$i]->$field = $array[$i][$field];
+            }
+        }
+        return $collection;
+    }
+
+
 }
