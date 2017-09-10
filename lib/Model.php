@@ -38,37 +38,35 @@ class Model
         return $result;
     }
 
-    public function getWhere($params, $where = 'id', $sign = '=' ) {
-        if($where === 'id') $params = (int)$params;
-
-        $sql = "SELECT * FROM {$this->table} WHERE {$where} {$sign} '{$params}'";
-        $result = $this->db->get($sql);
-
-        if (!isset($result) || !count($result)) return null;
-
-        return $this->collection($result, $this->class);
-    }
-
-    public function getList($only_published = false)
-    {
-        $sql = "SELECT * FROM {$this->table} WHERE 1";
-        if ($only_published) {
-            $sql .= " AND `is_published` = 1";
-        }
-        $result = $this->db->get($sql);
-
-        if (!isset($result) || !count($result)) return null;
-
-        return $this->collection($result, $this->class);
-    }
+//    public function getWhere($params, $where = 'id', $sign = '=' ) {
+//        if($where === 'id') $params = (int)$params;
+//
+//        $sql = "SELECT * FROM {$this->table} WHERE {$where} {$sign} '{$params}'";
+//        $result = $this->db->get($sql);
+//
+//        if (!isset($result) || !count($result)) return null;
+//
+//        return $this->collection($result, $this->class);
+//    }
+//
+//    public function getList($only_published = false)
+//    {
+//        $sql = "SELECT * FROM {$this->table} WHERE 1";
+//        if ($only_published) {
+//            $sql .= " AND `is_published` = 1";
+//        }
+//        $result = $this->db->get($sql);
+//
+//        if (!isset($result) || !count($result)) return null;
+//
+//        return $this->collection($result, $this->class);
+//    }
 
     public function delete()
     {
         $sql = "DELETE FROM {$this->table} WHERE id={$this->id}";
         return $this->db->input($sql);
     }
-
-
 
     public function destroy()
     {
@@ -101,7 +99,7 @@ class Model
         }
 
         $sql = substr($sql, 0, -2);
-
+        dd($sql);
         return $this->db->input($sql);
     }
 
@@ -137,51 +135,51 @@ class Model
 
     protected function hasMany($model, $key)
     {
-        return (new $model())->getWhere($this->id, $key);
-    }
-
-    protected function hasManyToMany($model, $field)
-    {
-        $relate_table = new $model();
-
-        $list = $relate_table->getWhere($this->id, $field);
-
-        unset($relate_table->relations[$field]);
-
-        $new_class = array_values($relate_table->relations)[0];
-        $new_field = array_keys($relate_table->relations)[0];
-        $newmodel = new $new_class();
-
-        if (count($list)) {
-            $arr = [];
-
-            foreach ($list as $l) {
-                $arr[] = $l->$new_field;
-            }
-
-            $str = implode(',', $arr);
-
-            $images = $newmodel->findIn($str);
-
-            return $images;
-        }
-
-        return null;
-    }
-
-    public function findIn($str) {
-
-        $sql = "SELECT * FROM {$this->table} WHERE id in ({$str})";
-        $result = $this->db->get($sql);
-
-        if (!isset($result) || !count($result)) return null;
-
-        return $this->collection($result, $this->class);
+        return (new $model())->select()->where($this->id, $key)->get();
     }
 
     protected function hasOne($model, $key)
     {
         return (new $model())->find($key);
+    }
+
+//    protected function hasManyToMany($model, $field)
+//    {
+//        $relate_table = new $model();
+//
+//        $list = $relate_table->select()->where($this->id, $field)->get();
+//
+//        unset($relate_table->relations[$field]);
+//
+//        $new_class = array_values($relate_table->relations)[0];
+//        $new_field = array_keys($relate_table->relations)[0];
+//        $newmodel = new $new_class();
+//
+//        if (count($list)) {
+//            $arr = [];
+//
+//            foreach ($list as $l) {
+//                $arr[] = $l->$new_field;
+//            }
+//
+//            $str = implode(',', $arr);
+//
+//            $images = $newmodel->findIn($str);
+//
+//            return $images;
+//        }
+//
+//        return null;
+//    }
+
+    public function findIn($str, $where = 'id') {
+
+        $sql = "SELECT * FROM {$this->table} WHERE {$where} in ('{$str}')";
+        $result = $this->db->get($sql);
+
+        if (!isset($result) || !count($result)) return null;
+
+        return $this->collection($result, $this->class);
     }
 
     public function sync($array, $model, $relate, $sign)
@@ -311,7 +309,7 @@ class Model
         $this->sql .= " INNER JOIN $table1 ON {$table1}.id={$table2}.id ";
     }
 
-    public function getModel($array)
+    protected function getModel($array)
     {
         foreach ($array as $key => $item) {
             foreach ($item as $key => $value) {
@@ -321,7 +319,7 @@ class Model
         return $this;
     }
 
-    public function getCollection($array)
+    protected function getCollection($array)
     {
         $collection = [];
         for ($i = 0; $i < count($array); $i++) {

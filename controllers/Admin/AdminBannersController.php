@@ -10,7 +10,7 @@ class AdminBannersController extends Controller
 
     public function index()
     {
-        $banners = $this->model->getList();
+        $banners = $this->model->all();
 
         foreach (checkArr($banners) as $banner) {
             $banner->images();
@@ -41,7 +41,7 @@ class AdminBannersController extends Controller
             if ($banner->create()) {
                 Session::set('success', 'Banner created successfuly');
             } else {
-                Session::setFlash('fail', 'Banner was not created');
+                Session::set('fail', 'Banner was not created');
             }
 
             return Router::redirect('/admin/banners');
@@ -51,7 +51,7 @@ class AdminBannersController extends Controller
     public function edit($id)
     {
         $images = new Image();
-        $images = $images->getList();
+        $images = $images->all();
 
         $banner = $this->model->findOrFail($id)->images();
 

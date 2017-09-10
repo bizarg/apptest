@@ -6,14 +6,14 @@
 <!-- Place somewhere in the <body> of your page -->
 <div class="flexslider">
     <ul class="slides">
-        <li data-thumb="../../webroot/img/slide1.jpg">
-            <img src="../../webroot/img/slide1.jpg" style="width: auto;" />
+        <li data-thumb="<?=SITE;?>/webroot/img/slide1.jpg">
+            <img src="<?=SITE;?>/webroot/img/slide1.jpg" style="width: auto;" />
         </li>
-        <li data-thumb="../../webroot/img/slide2.jpg">
-            <img src="../webroot/img/slide2.jpg" style="width: auto;" />
+        <li data-thumb="<?=SITE;?>/webroot/img/slide2.jpg">
+            <img src="<?=SITE;?>/webroot/img/slide2.jpg" style="width: auto;" />
         </li>
-        <li data-thumb="../../webroot/img/slide3.jpg">
-            <img src="../../webroot/img/slide3.jpg" style="width: auto;" />
+        <li data-thumb="<?=SITE;?>/webroot/img/slide3.jpg">
+            <img src="<?=SITE;?>/webroot/img/slide3.jpg" style="width: auto;" />
         </li>
     </ul>
 </div>

@@ -10,7 +10,7 @@ class AdminImagesController extends Controller
 
     public function index()
     {
-        $images = $this->model->getList();
+        $images = $this->model->all();
 
         return view('images.admin_index', compact('images'));
     }
@@ -66,28 +66,58 @@ class AdminImagesController extends Controller
         if ($_POST) {
 
             $this->validate($_POST, [
-                'name' => 'required|min:2',
+//                'name' => 'required|min:2',
                 'link' => 'required|min:2',
-                'img' => 'required|min:2',
+//                'img' => 'required|min:2',
                 'position' => 'int',
             ]);
-
-
 
             if ($this->fail) {
                 Session::set('error', $this->error);
                 return Router::redirect("/admin/images/add");
             }
 
+
+
             $image = new Image();
-            $image->name = $_POST['name'];
+            $image->name = $_FILES['file']['name'];
             $image->link = $_POST['link'];
-            $image->img = $_POST['img'];
+            $image->img = PATH_IMG;
             $image->position = $_POST['position'];
             $image->is_published = $_POST['is_published'] = isset($_POST['is_published']) ? 1 : 0;
 
-            if ($_POST['banner_id']) {
-                $image->banner_id = $_POST['banner_id'];
+            if ($_FILES) {
+                // Каталог, в который мы будем принимать файл:
+                $uploaddir = ROOT .DS. "webroot".DS."img".DS;
+
+                $uploadfile = $uploaddir.$_FILES['file']['name'];
+
+                if (is_uploaded_file($_FILES['file']['tmp_name'])) {
+
+                    $finfo = new finfo(FILEINFO_MIME_TYPE);
+
+                    if (false === $ext = array_search(
+                            $finfo->buffer(file_get_contents($_FILES['file']['tmp_name'])) ,
+                            array(
+                                'jpg' => 'image/jpeg',
+                                'png' => 'image/png',
+                                'gif' => 'image/gif',
+                            ),
+                            true
+                        )) {
+                        throw new RuntimeException('Invalid file format.');
+                    }
+
+                    if (move_uploaded_file($_FILES['file']['tmp_name'],
+                        $uploadfile))
+                    {
+                        // подсказываем
+                        echo 'Файл '.basename($_FILES['file']['name']).
+                            ' был успешно загружен в '.$uploaddir;
+                    }
+                } else {
+                    throw new RuntimeException('Invalid file ');
+                }
             }
 
             if ($image->create()) {

@@ -16,5 +16,8 @@ class Banner extends Model
     {
         $this->images = $this->hasManyToMany('BannerImage', 'banner_id');
         return $this;
+
+//       return $this->hasManyToMany('BannerImage', 'banner_id');
+
     }
 }

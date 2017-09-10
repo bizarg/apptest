@@ -47,33 +47,43 @@ class AuthController extends Controller
                 return Router::redirect('/auth/register');
             }
 
-            $email = $this->model->find($_POST['email'], 'email');
-            $login = $this->model->find($_POST['login'], 'login');
+//            $email = $this->model->find($_POST['email'], 'email');
+//            $login = $this->model->find($_POST['login'], 'login');
 
-            if(!$email && !$login) {
-                if($_POST['password'] == $_POST['second_password']) {
-                    $hash = md5(Config::get('salt') . $_POST['password']);
+            $email = $this->model->select()
+                ->where($_POST['email'], 'email')
+                ->getOne();
 
-                        $user = new User();
-                        $user->login = $_POST['login'];
-                        $user->email = $_POST['email'];
-                        $user->password = $hash;
+            if ($email) {
+                Session::set('error', ['Пользователль с таким email уже зарегесрирован']);
+                return Router::redirect('/auth/register');
+            }
 
-                    if ($user->create()) {
-                        $this->signin($_POST);
-                    } else {
-                        return Router::redirect('/auth/register');
-                    }
+            if($_POST['password'] == $_POST['second_password']) {
+                $hash = md5(Config::get('salt') . $_POST['password']);
+
+                    $user = new User();
+                    $user->login = $_POST['login'];
+                    $user->email = $_POST['email'];
+                    $user->password = $hash;
+
+                if ($user->create()) {
+                    $this->signin($_POST);
+                } else {
+                    return Router::redirect('/auth/register');
                 }
             }
         }
+
 
         return view('auth.register');
     }
 
     private function signin($data)
     {
-        $user = $this->model->find($data['login'], 'login');
+        $user = $this->model->select()
+            ->where($_POST['login'], 'login')
+            ->getOne();
 
         if (!$user) {
             Session::set('error', ['Данный пользователь не найден']);

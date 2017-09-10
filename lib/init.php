@@ -41,7 +41,7 @@ function __($key, $default_value = '') {
     return Lang::get($key, $default_value);
 }
 
-function dd($value) {
+function dd($value = null) {
     var_dump($value);die;
 }
 function dump($value) {
