@@ -78,11 +78,11 @@ class AdminBannersController extends Controller
 
                 $data = isset($_POST['images']) ? $_POST['images'] : [];
                 $banner->sync($data, new BannerImage(),'images', 'banner_id');
-//                return Router::redirect('/admin/banners/');
-//
-//            } else {
-//                Session::set('fail', 'Banner was not update');
-//                return Router::redirect("/admin/banners/edit/{$id}");
+                return Router::redirect('/admin/banners/');
+
+            } else {
+                Session::set('fail', 'Banner was not update');
+                return Router::redirect("/admin/banners/edit/{$id}");
             }
         }
     }

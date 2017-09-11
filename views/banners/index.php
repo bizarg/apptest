@@ -14,22 +14,9 @@
                 </li>
             <?php endforeach; ?>
         <?php endif; ?>
-<!--        <li>-->
-<!--            <img src="--><?//=PATH_IMG?><!--woman-433982_960_720.jpg" />-->
-<!--        </li>-->
-<!--        <li>-->
-<!--            <img src="--><?//=PATH_IMG?><!--2046697_250xr.jpg" />-->
-<!--        </li>-->
     </ul>
 </div>
 
 <br>
-
-<?php foreach($pages as $page) : ?>
-    <div style="margin-top: 20px">
-        <a href="/pages/view/<?=$page->alias?>"><?=$page->title?></a>
-    </div>
-
-<?php endforeach;?>
 
 <?php include ROOT.DS."views".DS."footer.php"?>

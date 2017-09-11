@@ -28,8 +28,10 @@ class DB
     {
         if($this->conn === null) $this->initConnect();
         $result = $this->conn->query($sql);
+        if (!$result) return null;
 
         return $result->fetchAll(PDO::FETCH_ASSOC);
+
     }
 
 

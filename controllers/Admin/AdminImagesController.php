@@ -92,6 +92,11 @@ class AdminImagesController extends Controller
 
                 $uploadfile = $uploaddir.$_FILES['file']['name'];
 
+                if (file_exists($uploadfile)) {
+                    Session::set('fail', 'This file exist');
+                    return Router::redirect('/admin/images');
+                }
+
                 if (is_uploaded_file($_FILES['file']['tmp_name'])) {
 
                     $finfo = new finfo(FILEINFO_MIME_TYPE);
@@ -122,28 +127,19 @@ class AdminImagesController extends Controller
                 }
             }
 
-
-
-            Router::redirect('/admin/images');
+            return Router::redirect('/admin/images');
         }
     }
 
     public function delete($id)
     {
-
         $image = $this->model->findOrFail($id);
-
-//        $banner = new Banner();
-//        $banner = $banner->findOrFail(46);
-//        $banner->destroy();
-
-
 
         $path = ROOT . DS . "webroot" . DS . "img" .DS . $image->name;
 
-//        if (!unlink($path)) {
-//            Session::set('fail', 'Images was not deleted');
-//        }
+        if (!unlink($path)) {
+            Session::set('fail', 'Images was not deleted');
+        }
 
 
         if ($image->destroy()) {

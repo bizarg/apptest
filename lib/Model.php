@@ -199,7 +199,7 @@ class Model
                 if(!in_array($object->id, $array)) {
                     $newmodel = new $model();
                     $object_delete = $newmodel->select()->where($object->id, $new_field)->getOne();
-                    dump('delete');
+//                    dump('delete');
                     $object_delete->delete();
                 }
             }
@@ -208,10 +208,10 @@ class Model
         foreach ($array as $id) {
             $newmodel = new $model();
             $object = $newmodel->select()->where($this->id, $sign)->andWhere($id, $new_field)->getOne();
-            dump($object);
+//            dump($object);
 
             if (!isset($object->$sign) && !isset($object->$new_field)) {
-                dump('create');
+//                dump('create');
                 $newobject = new $model();
                 $newobject->$sign = $this->id;
                 $newobject->$new_field = $id;
@@ -222,11 +222,11 @@ class Model
                 && isset($object->$new_field)
                 && $object->$new_field == $id
             ) {
-                dump('continue');
+//                dump('continue');
                 continue;
             }
             else {
-                dump('update');
+//                dump('update');
                 $object->$sign = $this->id;
                 $object->$new_field = $id;
                 $object->update();
@@ -327,12 +327,17 @@ class Model
 
     protected function getModel($array)
     {
-        foreach ($array as $key => $item) {
-            foreach ($item as $key => $value) {
-                $this->$key = $value;
+        if (count($array)) {
+            foreach ($array as $key => $item) {
+                foreach ($item as $key => $value) {
+                    $this->$key = $value;
+                }
             }
+            return $this;
         }
-        return $this;
+
+        return null;
+
     }
 
     protected function getCollection($array)

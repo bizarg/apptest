@@ -4,22 +4,23 @@
 
 //use apptest\lib\Controller;
 
-class PagesController extends Controller
+class BanersController extends Controller
 {
     public function __construct(array $data = [])
     {
         parent::__construct($data);
-        $this->model = new Page();
+        $this->model = new Banner();
     }
 
     public function index()
     {
-        $pages = $this->model->All();
-        $banner = new Banner;
-        $banner = $banner->select()->where('banner', 'name')->getOne();
-        $banner->images = $banner->images();
+        $banner = $this->model->select()->where('clock', 'name')->getOne();
 
-        return view('pages.index', compact('pages', 'banner'));
+        if ($banner) {
+            $banner->images = $banner->images();
+        }
+
+        return view('banners.index', compact('pages', 'banner'));
     }
 
     public function view()
