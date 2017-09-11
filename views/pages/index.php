@@ -4,17 +4,17 @@
 
 
 <!-- Place somewhere in the <body> of your page -->
+
 <div class="flexslider">
     <ul class="slides">
-        <li data-thumb="<?=SITE;?>/webroot/img/slide1.jpg">
-            <img src="<?=SITE;?>/webroot/img/slide1.jpg" style="width: auto;" />
+        <?php foreach($banner->images as $image) : ?>
+        <li>
+            <img src="../../webroot/img/woman-433982_960_720.jpg" />
         </li>
-        <li data-thumb="<?=SITE;?>/webroot/img/slide2.jpg">
-            <img src="<?=SITE;?>/webroot/img/slide2.jpg" style="width: auto;" />
-        </li>
-        <li data-thumb="<?=SITE;?>/webroot/img/slide3.jpg">
-            <img src="<?=SITE;?>/webroot/img/slide3.jpg" style="width: auto;" />
-        </li>
+            <li>
+                <img src="../../webroot/img/woman-433982_960_720.jpg" />
+            </li>
+        <?php endforeach; ?>
     </ul>
 </div>
 

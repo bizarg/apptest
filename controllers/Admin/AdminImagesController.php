@@ -29,7 +29,7 @@ class AdminImagesController extends Controller
             $this->validate($_POST, [
                 'name' => 'required|min:2',
                 'link' => 'required|min:2',
-                'img' => 'required|min:2',
+//                'img' => 'required|min:2',
                 'position' => 'int',
             ]);
 
@@ -82,7 +82,7 @@ class AdminImagesController extends Controller
             $image = new Image();
             $image->name = $_FILES['file']['name'];
             $image->link = $_POST['link'];
-            $image->img = PATH_IMG;
+//            $image->img = PATH_IMG;
             $image->position = $_POST['position'];
             $image->is_published = $_POST['is_published'] = isset($_POST['is_published']) ? 1 : 0;
 
@@ -111,22 +111,47 @@ class AdminImagesController extends Controller
                     if (move_uploaded_file($_FILES['file']['tmp_name'],
                         $uploadfile))
                     {
-                        // подсказываем
-                        echo 'Файл '.basename($_FILES['file']['name']).
-                            ' был успешно загружен в '.$uploaddir;
+                        if ($image->create()) {
+                            Session::set('success', 'Image created successfuly');
+                        } else {
+                            Session::set('fail', 'Image was not created');
+                        }
                     }
                 } else {
                     throw new RuntimeException('Invalid file ');
                 }
             }
 
-            if ($image->create()) {
-                Session::set('success', 'Image created successfuly');
-            } else {
-                Session::set('fail', 'Image was not created');
-            }
+
 
             Router::redirect('/admin/images');
         }
+    }
+
+    public function delete($id)
+    {
+
+        $image = $this->model->findOrFail($id);
+
+//        $banner = new Banner();
+//        $banner = $banner->findOrFail(46);
+//        $banner->destroy();
+
+
+
+        $path = ROOT . DS . "webroot" . DS . "img" .DS . $image->name;
+
+//        if (!unlink($path)) {
+//            Session::set('fail', 'Images was not deleted');
+//        }
+
+
+        if ($image->destroy()) {
+            Session::set('success', 'Banner was deleted');
+        } else {
+            Session::set('fail', 'Banner was not deleted');
+        }
+
+        return Router::redirect('/admin/images/');
     }
 }

@@ -6,18 +6,15 @@ class Banner extends Model
     protected $table = 'banners';
     protected $fillable = ['id', 'name'];
     protected $relations = ['images'];
-
-//    public function images()
-//    {
-//        return $this->images = $this->hasMany('Image', 'banner_id');
-//    }
+    protected $destroy = ['bannerImages'];
 
     public function images()
     {
-        $this->images = $this->hasManyToMany('BannerImage', 'banner_id');
-        return $this;
+        return $this->hasManyToMany('BannerImage', 'banner_id');
+    }
 
-//       return $this->hasManyToMany('BannerImage', 'banner_id');
-
+    public function bannerImages()
+    {
+        return $this->hasMany('BannerImage', 'banner_id');
     }
 }

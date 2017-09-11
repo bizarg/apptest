@@ -29,7 +29,7 @@
     <br/>
 
     <div>
-        <a href="<?=path('admin.banners.add')?>"><button class="btn btn-sm btn-success">New Banner</button></a>
+        <a href="/admin/banners/add"><button class="btn btn-sm btn-success">New Banner</button></a>
     </div>
 
 <?php include ROOT.DS."views".DS."footer.php"?>

@@ -13,8 +13,9 @@ class AdminBannersController extends Controller
         $banners = $this->model->all();
 
         foreach (checkArr($banners) as $banner) {
-            $banner->images();
+            $banner->images = $banner->images();
         }
+
 
         return view('banners.admin_index', compact('banners'));
     }
@@ -53,7 +54,8 @@ class AdminBannersController extends Controller
         $images = new Image();
         $images = $images->all();
 
-        $banner = $this->model->findOrFail($id)->images();
+        $banner = $this->model->findOrFail($id);
+        $banner->images = $banner->images();
 
         return view('banners.admin_edit', compact('images', 'banner'));
     }
@@ -76,11 +78,11 @@ class AdminBannersController extends Controller
 
                 $data = isset($_POST['images']) ? $_POST['images'] : [];
                 $banner->sync($data, new BannerImage(),'images', 'banner_id');
-                return Router::redirect('/admin/banners/');
-
-            } else {
-                Session::set('fail', 'Banner was not update');
-                return Router::redirect("/admin/banners/edit/{$id}");
+//                return Router::redirect('/admin/banners/');
+//
+//            } else {
+//                Session::set('fail', 'Banner was not update');
+//                return Router::redirect("/admin/banners/edit/{$id}");
             }
         }
     }
@@ -88,7 +90,7 @@ class AdminBannersController extends Controller
     public function delete($id)
     {
         if ($id) {
-            if ($this->model->findOrFail($id)->destroy()) {
+            if ($this->model->findOrFail($id)->delete()) {
                 Session::set('success', 'Banner was deleted');
             } else {
                 Session::set('fail', 'Banner was not deleted');

@@ -13,7 +13,7 @@ class AdminPagesController extends Controller
 
     public function index()
     {
-        $pages = $this->model->getList();
+        $pages = $this->model->all();
 
         return view('admin.index', compact('pages'));
     }

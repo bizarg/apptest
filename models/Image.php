@@ -6,10 +6,15 @@ class Image extends Model
     protected $table = "images";
     protected $fillable = ['id', 'name', 'img', 'link', 'is_published', 'position'];
     protected $relations = ['banners'];
+    protected $destroy = ['bannerImages'];
 
     public function banners()
     {
-        $this->banners = $this->hasManyToMany('BannerImage', 'image_id');
-        return $this;
+        return $this->hasManyToMany('BannerImage', 'image_id');
+    }
+
+    public function bannerImages()
+    {
+        return $this->hasMany('BannerImage', 'image_id');
     }
 }

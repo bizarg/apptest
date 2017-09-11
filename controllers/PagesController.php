@@ -15,8 +15,11 @@ class PagesController extends Controller
     public function index()
     {
         $pages = $this->model->All();
+        $banner = new Banner;
+        $banner = $banner->select()->where('banner', 'name')->getOne();
+        $banner->images = $banner->images();
 
-        return view('pages.index', compact('pages'));
+        return view('pages.index', compact('pages', 'banner'));
     }
 
     public function view()

@@ -28,10 +28,10 @@
         </tr>
             <?php foreach (checkArr($banner->images) as $image) : ?>
         <tr>
-        <td><a href="<?=path("admin.images.edit.".$image->id)?>"><?=$image->name?></a></td>
+        <td><a href="/admin/images/edit/<?=$image->id?>"><?=$image->name?></a></td>
                 <td>
-                    <a href="<?=path("admin.images.edit.".$image->id)?>"><button class="btn btn-sm btn-primary">edit</button></a>
-                    <a href="<?=path("admin.images.delete.".$image->id)?>" onclick="return confirmDelete();"><button class="btn btn-sm btn-warning">delete</button></a>
+                    <a href="/admin/images/edit/<?=$image->id?>"><button class="btn btn-sm btn-primary">edit</button></a>
+                    <a href="/admin/images/delete/<?=$image->id?>" onclick="return confirmDelete();"><button class="btn btn-sm btn-warning">delete</button></a>
                 </td>
         </tr>
             <?php endforeach; ?>
@@ -40,7 +40,7 @@
     <br/>
 
     <div>
-        <a href="<?=path('admin.images.add.'.$banner->id)?>"><button class="btn btn-sm btn-success">Add new image</button></a>
+        <a href="/admin/images/delete/<?=$banner->id?>"><button class="btn btn-sm btn-success">Add new image</button></a>
     </div>
 
     <script type="text/javascript">

@@ -7,6 +7,7 @@ class Model
     protected $db;
     protected $class;
     protected $relations = [];
+    protected $destroy = [];
     protected $sql;
 
     public function __construct()
@@ -18,6 +19,7 @@ class Model
         if($where === 'id') $params = (int)$params;
 
         $sql = "SELECT * FROM {$this->table} WHERE {$where}{$sign}'{$params}' LIMIT 1";
+//        dd($sql);
         $result = $this->db->get($sql);
 
         if (!isset($result) || !count($result)) return null;
@@ -70,24 +72,28 @@ class Model
 
     public function destroy()
     {
-        if (count($this->relations)) {
+        if (count($this->destroy)) {
 
-            foreach ($this->relations as $relate) {
-                $this->deleteRelate($this->$relate());
+            foreach ($this->destroy as $relate) {
+                if (count($this->$relate())) {
+                    $this->deleteRelate($this->$relate());
+                }
             }
         }
+
         return $this->delete();
     }
 
     protected function deleteRelate($value)
     {
-        return $value;
         if (is_array($value)) {
             foreach($value as $val) {
                 $val->delete();
             }
+        } else {
+            return $value->delete();
         }
-        return $value->delete();
+
     }
 
     public function create()
@@ -99,7 +105,7 @@ class Model
         }
 
         $sql = substr($sql, 0, -2);
-        dd($sql);
+
         return $this->db->input($sql);
     }
 
@@ -143,38 +149,36 @@ class Model
         return (new $model())->find($key);
     }
 
-//    protected function hasManyToMany($model, $field)
-//    {
-//        $relate_table = new $model();
-//
-//        $list = $relate_table->select()->where($this->id, $field)->get();
-//
-//        unset($relate_table->relations[$field]);
-//
-//        $new_class = array_values($relate_table->relations)[0];
-//        $new_field = array_keys($relate_table->relations)[0];
-//        $newmodel = new $new_class();
-//
-//        if (count($list)) {
-//            $arr = [];
-//
-//            foreach ($list as $l) {
-//                $arr[] = $l->$new_field;
-//            }
-//
-//            $str = implode(',', $arr);
-//
-//            $images = $newmodel->findIn($str);
-//
-//            return $images;
-//        }
-//
-//        return null;
-//    }
+    protected function hasManyToMany($model, $field)
+    {
+        $relate_table = new $model();
 
-    public function findIn($str, $where = 'id') {
+        $list = $relate_table->select()->where($this->id, $field)->get();
 
-        $sql = "SELECT * FROM {$this->table} WHERE {$where} in ('{$str}')";
+        unset($relate_table->relations[$field]);
+
+        $new_class = array_values($relate_table->relations)[0];
+        $new_field = array_keys($relate_table->relations)[0];
+        $newmodel = new $new_class();
+
+        if (count($list)) {
+            $arr = [];
+
+            foreach ($list as $l) {
+                $arr[] = $l->$new_field;
+            }
+
+//            dd($newmodel->findIn($arr));
+            return $newmodel->findIn($arr);
+        }
+
+        return null;
+    }
+
+    public function findIn(Array $arr) {
+
+        $sql = "SELECT * FROM {$this->table} WHERE id in (".implode(",", $arr).")";
+
         $result = $this->db->get($sql);
 
         if (!isset($result) || !count($result)) return null;
@@ -184,43 +188,50 @@ class Model
 
     public function sync($array, $model, $relate, $sign)
     {
-        $this->$relate();
-
+//        $data, new BannerImage(),'images', 'banner_id'
         $newmodel = new $model();
         unset($newmodel->relations[$sign]);
         $new_field = array_keys($newmodel->relations)[0];
+        $objects = $this->$relate();
 
-        if (count($this->$relate)) {
-            foreach ($this->$relate as $object) {
-                $newmodel = new $model();
+        if (count($objects)) {
+            foreach ($objects as $object) {
                 if(!in_array($object->id, $array)) {
-                    $banner_image = $newmodel->find($object->id, $new_field);
-                    $banner_image->delete();
+                    $newmodel = new $model();
+                    $object_delete = $newmodel->select()->where($object->id, $new_field)->getOne();
+                    dump('delete');
+                    $object_delete->delete();
                 }
             }
         }
 
         foreach ($array as $id) {
             $newmodel = new $model();
+            $object = $newmodel->select()->where($this->id, $sign)->andWhere($id, $new_field)->getOne();
+            dump($object);
 
-            $banner_image = $newmodel->find($id, $sign);
-
-
-            if (!$banner_image) {
-                $newmodel = new $model();
-                $newmodel->$sign = $this->id;
-                $newmodel->$new_field = $id;
-                $newmodel->create();
-            } else {
-                if ($banner_image->$sign == $this->id && $banner_image->$new_field == $id) {
-
-                } else {
-                    $newmodel = new $model();
-                    $newmodel->$sign = $this->id;
-                    $newmodel->$new_field = $id;
-                    $newmodel->create();
-                }
+            if (!isset($object->$sign) && !isset($object->$new_field)) {
+                dump('create');
+                $newobject = new $model();
+                $newobject->$sign = $this->id;
+                $newobject->$new_field = $id;
+                $newobject->create();
+            } elseif (
+                isset($object->$sign)
+                && $object->$sign == $this->id
+                && isset($object->$new_field)
+                && $object->$new_field == $id
+            ) {
+                dump('continue');
+                continue;
             }
+            else {
+                dump('update');
+                $object->$sign = $this->id;
+                $object->$new_field = $id;
+                $object->update();
+            }
+
         }
     }
 
@@ -236,24 +247,28 @@ class Model
 //    --------------------------------------------------------------
     public function andWhere($params, $where = 'id', $sign = '=')
     {
+        if ($where == 'id') $params = (int)$params;
         $this->sql .= " AND {$where}{$sign}'{$params}' ";
         return $this;
     }
 
     public function orWhere($params, $where = 'id', $sign = '=')
     {
+        if ($where == 'id') $params = (int)$params;
         $this->sql .= " OR {$where}{$sign}'{$params}' ";
         return $this;
     }
 
     public function where($params, $where = 'id', $sign = '=')
     {
+        if ($where == 'id') $params = (int)$params;
         $this->sql .= " WHERE {$where}{$sign}'{$params}' ";
         return $this;
     }
 
     public function whereIn($str, $where)
     {
+        if ($where == 'id') $str = (int)$str;
         $this->sql .= " WHERE {$where} in ('$str') ";
         return $this;
     }
@@ -276,6 +291,7 @@ class Model
 
     public function one($id)
     {
+        $id = (int)$id;
         return $this->getModel($this->db->get("SELECT * FROM {$this->table} WHERE id={$id} LIMIT 1 "));
     }
 
