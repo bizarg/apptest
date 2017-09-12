@@ -1,4 +1,4 @@
-<?php include ROOT.DS."views".DS."header.php"?>
+<?php //include ROOT.DS."views".DS."header.php"?>
 
 
 <h3>Contact us</h3>
@@ -11,4 +11,4 @@
 
 
 
-<?php include ROOT.DS."views".DS."footer.php"?>
+<?php //include ROOT.DS."views".DS."footer.php"?>

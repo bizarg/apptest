@@ -51,7 +51,10 @@ function dump($value) {
 function view($value, $data = null){
     if ($data) extract($data);
 
+    ob_start();
     include path($value,VIEWS_PATH).".php";
+    $content = ob_get_clean();
+    return $content;
 }
 
 function path($value, $include = SITE) {
@@ -64,7 +67,66 @@ function path($value, $include = SITE) {
 }
 
 function checkArr($var){
-    if(count($var) && isset($var)) return $var;
+    if(isset($var) && count($var)) return $var;
 
-    return $var = [];
+    return [];
 }
+
+function resize($filename, $uploadfile, $type, $max_resolution = 250){
+    // файл
+
+//    $filename = $dir.$file;
+
+// задание максимальной ширины и высоты
+//    $width = 200;
+//    $height = 200;
+
+// тип содержимого
+//    header('Content-Type: image/jpeg');
+
+// получение новых размеров
+//    list($width_orig, $height_orig) = getimagesize($filename);
+////
+//    $ratio_orig = $width_orig/$height_orig;
+//
+//    if ($width/$height > $ratio_orig) {
+//        $width = $height*$ratio_orig;
+//    } else {
+//        $height = $width/$ratio_orig;
+//    }
+    $createfrom = 'imagecreatefrom'.$type;
+    $image = 'image'.$type;
+
+    $original_image = $createfrom($filename);
+
+    $original_width = imagesx($original_image);
+    $original_height = imagesy($original_image);
+
+    $ratio = $max_resolution/$original_width;
+    $new_width = $max_resolution;
+    $new_height = $original_height*$ratio;
+
+    if($new_height<$max_resolution){
+        $ratio = $max_resolution/$original_height;
+        $new_height = $max_resolution;
+        $new_width = $original_width * $ratio;
+    }
+
+    if ($original_image) {
+        $new_image = imagecreatetruecolor($new_width, $new_height);
+        imagecopyresampled($new_image, $original_image, 0, 0, 0, 0, $new_width, $new_height, $original_width, $original_height);
+        $image($new_image, $uploadfile, 90);
+
+        imagedestroy($original_image);
+        imagedestroy($new_image);
+        return true;
+    }
+//// ресэмплирование
+//    $image_p = imagecreatetruecolor($width, $height);
+//    $image = imagecreatefromjpeg($filename);
+//    imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+//
+//// вывод
+
+}
+

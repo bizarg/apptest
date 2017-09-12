@@ -1,13 +1,13 @@
-<?php include ROOT.DS."views".DS."admin_header.php"?>
+<?php //include ROOT.DS."views".DS."admin_header.php"?>
 
     <h3>Banners</h3>
 
     <table class="table tabel-striped" style="width: 100%;">
         <tr>
-            <td style="width: 5%;">#</td>
-            <td style="width: 10%;">Name</td>
-            <td style="width: 10%;">Image</td>
-            <td>Action</td>
+            <td style="width: 10%;">#</td>
+            <td style="width: 30%;">Name</td>
+            <td style="width: 30%;">Image</td>
+            <td style="width: 30%;">Action</td>
         </tr>
         <?php foreach (checkArr($banners) as $banner) : ?>
             <tr>
@@ -32,4 +32,4 @@
         <a href="/admin/banners/add"><button class="btn btn-sm btn-success">New Banner</button></a>
     </div>
 
-<?php include ROOT.DS."views".DS."footer.php"?>
+<?php //include ROOT.DS."views".DS."footer.php"?>

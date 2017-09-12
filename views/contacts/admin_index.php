@@ -1,4 +1,4 @@
-<?php include ROOT.DS."views".DS."admin_header.php"?>
+<?php //include ROOT.DS."views".DS."admin_header.php"?>
 
 <h3>Messages</h3>
 
@@ -10,14 +10,15 @@
         <td style="width: 25%;">Email</td>
         <td style="width: 50%;">Messages</td>
     </tr>
-    <?php foreach ($data as $item) : ?>
+
+    <?php foreach (checkArr($messages) as $message) : ?>
     <tr>
-        <td><?=$item['id']?></td>
-        <td><?=$item['name']?></td>
-        <td><?=$item['email']?></td>
-        <td><?=$item['message']?></td>
+        <td><?=$message->id?></td>
+        <td><?=$message->name?></td>
+        <td><?=$message->email?></td>
+        <td><?=$message->message?></td>
     </tr>
     <?php endforeach; ?>
 </table>
 
-<?php include ROOT.DS."views".DS."footer.php"?>
+<?php //include ROOT.DS."views".DS."footer.php"?>

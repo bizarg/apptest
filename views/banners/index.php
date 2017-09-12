@@ -1,4 +1,4 @@
-<?php include ROOT.DS."views".DS."header.php"?>
+<?php //include ROOT.DS."views".DS."header.php"?>
 
 <br>
 
@@ -10,7 +10,7 @@
         <?php if(isset($banner->images)) : ?>
             <?php foreach($banner->images as $image) : ?>
                 <li>
-                    <img src="<?=PATH_IMG.$image->name?>" />
+                    <img src="img/<?=$image->name?>"/>
                 </li>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -19,4 +19,4 @@
 
 <br>
 
-<?php include ROOT.DS."views".DS."footer.php"?>
+<?php //include ROOT.DS."views".DS."footer.php"?>

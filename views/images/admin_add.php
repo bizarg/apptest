@@ -1,4 +1,4 @@
-<?php include ROOT.DS."views".DS."admin_header.php"?>
+<?php //include ROOT.DS."views".DS."admin_header.php"?>
 
 
     <h3>Edit page</h3>
@@ -31,4 +31,4 @@
         <input type="submit" class="btn btn-success" />
     </form>
 
-<?php include ROOT.DS."views".DS."footer.php"?>
+<?php //include ROOT.DS."views".DS."footer.php"?>

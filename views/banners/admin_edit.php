@@ -1,4 +1,4 @@
-<?php include ROOT.DS."views".DS."admin_header.php"?>
+<?php //include ROOT.DS."views".DS."admin_header.php"?>
 
     <h3>Edit Banner</h3>
     <form action="/admin/banners/update/<?=$banner->id?>" method="post" enctype="multipart/form-data">
@@ -46,4 +46,4 @@
     <script type="text/javascript">
         $('select').select2();
     </script>
-<?php include ROOT.DS."views".DS."footer.php"?>
+<?php //include ROOT.DS."views".DS."footer.php"?>

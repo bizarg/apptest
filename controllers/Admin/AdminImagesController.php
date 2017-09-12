@@ -38,10 +38,17 @@ class AdminImagesController extends Controller
                 return Router::redirect("/admin/images/edit/{$_POST['id']}");
             }
 
-            $image = $this->model->find($_POST['id']);
+            $image = $this->model->findOrFail($_POST['id']);
+
+            $uploaddir = ROOT .DS. "webroot".DS."img".DS;
+            $oldname = $uploaddir.$image->name;
+
+            if (file_exists($oldname)) {
+                rename($oldname, $uploaddir.$_POST['name']);
+            }
+
             $image->name = $_POST['name'];
             $image->link = $_POST['link'];
-            $image->img = $_POST['img'];
             $image->position = $_POST['position'];
             $image->is_published = $_POST['is_published'] = isset($_POST['is_published']) ? 1 : 0;
 
@@ -104,7 +111,7 @@ class AdminImagesController extends Controller
                     if (false === $ext = array_search(
                             $finfo->buffer(file_get_contents($_FILES['file']['tmp_name'])) ,
                             array(
-                                'jpg' => 'image/jpeg',
+                                'jpeg' => 'image/jpeg',
                                 'png' => 'image/png',
                                 'gif' => 'image/gif',
                             ),
@@ -113,9 +120,7 @@ class AdminImagesController extends Controller
                         throw new RuntimeException('Invalid file format.');
                     }
 
-                    if (move_uploaded_file($_FILES['file']['tmp_name'],
-                        $uploadfile))
-                    {
+                    if (resize($_FILES['file']['tmp_name'], $uploadfile, $ext)) {
                         if ($image->create()) {
                             Session::set('success', 'Image created successfuly');
                         } else {

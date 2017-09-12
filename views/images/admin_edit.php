@@ -1,4 +1,4 @@
-<?php include ROOT.DS."views".DS."admin_header.php"?>
+<?php //include ROOT.DS."views".DS."admin_header.php"?>
 
 
 <h3>Edit page</h3>
@@ -14,10 +14,6 @@
         <input type="text" id="title" name="link" value="<?=$image->link?>" class="form-control">
     </div>
     <div class="form-group">
-        <label for="alias">Img</label>
-        <textarea id="content" name="img" class="form-control"><?=$image->img?></textarea>
-    </div>
-    <div class="form-group">
         <label for="alias">Position</label>
         <textarea id="content" name="position" class="form-control"><?=$image->position?></textarea>
     </div>
@@ -30,4 +26,4 @@
 
 
 
-<?php include ROOT.DS."views".DS."footer.php"?>
+<?php //include ROOT.DS."views".DS."footer.php"?>

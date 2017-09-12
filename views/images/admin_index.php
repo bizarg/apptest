@@ -1,10 +1,10 @@
-<?php include ROOT.DS."views".DS."admin_header.php"?>
+<?php //include ROOT.DS."views".DS."admin_header.php"?>
 
 <h3>Images</h3><br/>
 
 
 
-<table class="table table-strioed" style="width: 400px">
+<table class="table table-strioed">
     <?php foreach (checkArr($images) as $image) : ?>
         <tr>
             <td><b><?=$image->name?></b></td>
@@ -22,4 +22,4 @@
     <a href="/admin/images/add"><button class="btn btn-sm btn-success">New Image</button></a>
 </div>
 
-<?php include ROOT.DS."views".DS."footer.php"?>
+<?php //include ROOT.DS."views".DS."footer.php"?>

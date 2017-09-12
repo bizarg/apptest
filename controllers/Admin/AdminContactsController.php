@@ -11,8 +11,8 @@ class AdminContactsController extends Controller
     public function index()
     {
 
-        $this->data = $this->model->getList();
+        $messages = $this->model->all();
 
-        return view('contacts.admin_index');
+        return view('contacts.admin_index', compact('messages'));
     }
 }

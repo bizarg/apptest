@@ -4,7 +4,7 @@
 
 //use apptest\lib\Controller;
 
-class BanersController extends Controller
+class BannersController extends Controller
 {
     public function __construct(array $data = [])
     {
@@ -14,13 +14,13 @@ class BanersController extends Controller
 
     public function index()
     {
-        $banner = $this->model->select()->where('clock', 'name')->getOne();
+        $banner = $this->model->select()->where('banner', 'name')->getOne();
 
         if ($banner) {
             $banner->images = $banner->images();
         }
 
-        return view('banners.index', compact('pages', 'banner'));
+        return view('banners.index', compact('banner'));
     }
 
     public function view()
