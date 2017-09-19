@@ -4,7 +4,7 @@ class BannerImage extends Model
 {
     protected $class = 'BannerImage';
     protected $table = 'banner_image';
-    protected $fillable = ['id', 'banner_id', 'image_id'];
+    protected $fillable = ['id', 'banner_id', 'image_id', 'position'];
     protected $relations = [
         'banner_id' => 'Banner',
         'image_id' => 'Image'

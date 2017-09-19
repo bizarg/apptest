@@ -4,8 +4,8 @@
 
 <form method="post" action="/auth/login">
     <div class="form-group">
-        <label for="login">Login</label>
-        <input type="text" id="login" name="login" class="form-control" />
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" class="form-control" />
     </div>
 
     <div class="form-group">

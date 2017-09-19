@@ -1,9 +1,5 @@
 <?php
 
-//namespace apptest\controllers;
-
-//use apptest\lib\Controller;
-
 class BannersController extends Controller
 {
     public function __construct(array $data = [])

@@ -4,7 +4,7 @@ class Image extends Model
 {
     protected $class = 'Image';
     protected $table = "images";
-    protected $fillable = ['id', 'name', 'img', 'link', 'is_published', 'position'];
+    protected $fillable = ['id', 'name', 'link', 'is_published'];
     protected $relations = ['banners'];
     protected $destroy = ['bannerImages'];
 

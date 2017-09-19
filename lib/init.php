@@ -2,7 +2,9 @@
 
 require_once(ROOT . DS . 'config' . DS . 'config.php');
 
-//spl_autoload_register("__autoload");
+define('PATH_IMG',  'http:'.DS.DS . Config::get('host_name') . DS . "img" . DS);
+define('SITE', 'http:\\' . Config::get('host_name').DS);
+
 
 function __autoload($class_name) {
 
@@ -35,7 +37,7 @@ function __autoload($class_name) {
     }
 }
 
-
+//spl_autoload_register("__autoload");
 
 function __($key, $default_value = '') {
     return Lang::get($key, $default_value);

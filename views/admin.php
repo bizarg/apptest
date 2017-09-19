@@ -36,7 +36,7 @@
             <a class="navbar-brand" href="/"><?=Config::get('site_name')?> - <?=__('panel')?></a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-            <?php if (Session::get('login')) : ?>
+            <?php if (Session::get('role') == 'admin') : ?>
                 <ul class="nav navbar-nav">
                     <li><a <?php if(App::getRouter()->getController() == "contacts") {?> class='active' <?php } ;?> href="/admin/contacts/">Contacts</a></li>
                     <li><a <?php if(App::getRouter()->getController() == "AdminImages") {?> class='active' <?php } ;?> href="/admin/images/">Images</a></li>

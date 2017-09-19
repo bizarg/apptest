@@ -1,6 +1,6 @@
 <?php
 
-class Model
+class Model extends QueryBuilder
 {
     protected $fillable = [];
     protected $table;
@@ -245,43 +245,17 @@ class Model
         return $key;
     }
 //    --------------------------------------------------------------
-    public function andWhere($params, $where = 'id', $sign = '=')
-    {
-        if ($where == 'id') $params = (int)$params;
-        $this->sql .= " AND {$where}{$sign}'{$params}' ";
-        return $this;
-    }
 
-    public function orWhere($params, $where = 'id', $sign = '=')
-    {
-        if ($where == 'id') $params = (int)$params;
-        $this->sql .= " OR {$where}{$sign}'{$params}' ";
-        return $this;
-    }
-
-    public function where($params, $where = 'id', $sign = '=')
-    {
-        if ($where == 'id') $params = (int)$params;
-        $this->sql .= " WHERE {$where}{$sign}'{$params}' ";
-        return $this;
-    }
-
-    public function whereIn($str, $where)
-    {
-        if ($where == 'id') $str = (int)$str;
-        $this->sql .= " WHERE {$where} in ('$str') ";
-        return $this;
-    }
-
-    public function select($column = '*')
-    {
-        $this->sql .= "SELECT " . $column . " FROM {$this->table} ";
-        return $this;
-    }
 
     public function get()
     {
         return $this->getCollection($this->db->get($this->sql));
+    }
+
+    public function getArray()
+    {
+         return $this->db->get($this->sql);
+
     }
 
     public function getOne()
@@ -300,30 +274,7 @@ class Model
         return $this->getCollection($this->db->get("SELECT * FROM {$this->table}"));
     }
 
-    public function orderBy($column, $sort = 'DESC')
-    {
-        $this->sql .= " ORDER BY {$column} {$sort} ";
-    }
 
-    public function groupBy($column)
-    {
-        $this->sql .= " GROUP BY {$column} ";
-    }
-
-    public function having($column, $params, $sign = '=')
-    {
-        $this->sql .= " HAVING {$column}{$sign}'{$params}' ";
-    }
-
-    public function innerJoin($table)
-    {
-        $this->sql .= "SELECT * FROM {$this->table} INNER JOIN {$table} ON {$this->table}.id={$table}.id ";
-    }
-
-    public function addJoin($table1, $table2)
-    {
-        $this->sql .= " INNER JOIN $table1 ON {$table1}.id={$table2}.id ";
-    }
 
     protected function getModel($array)
     {

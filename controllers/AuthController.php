@@ -12,7 +12,7 @@ class AuthController extends Controller
     {
         if ($_POST) {
             $this->validate($_POST, [
-                'login' => 'required|min:2|max:32',
+                'email' => 'required|email',
                 'password' => 'required|password',
             ]);
 
@@ -82,7 +82,8 @@ class AuthController extends Controller
     private function signin($data)
     {
         $user = $this->model->select()
-            ->where($_POST['login'], 'login')
+            ->where($_POST['email'], 'email')
+            ->andWhere(md5(Config::get('salt').$_POST['password']), 'password')
             ->getOne();
 
         if (!$user) {
@@ -90,13 +91,11 @@ class AuthController extends Controller
             return Router::redirect('/auth/login');
         }
 
-        $hash = md5(Config::get('salt') . $data['password']);
-
-        if ($user->is_active && $hash == $user->password) {
-            Session::set('login', $user->login);
+        if ($user->is_active) {
+            Session::set('email', $user->email);
             Session::set('role', $user->role);
-            if ($user->role == 'admin') return Router::redirect('/admin/pages');
-            return Router::redirect('/pages/index');
+            if ($user->role == 'admin') return Router::redirect('/admin/banners');
+            return Router::redirect('/banners/index');
         }
 
     }

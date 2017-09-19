@@ -45,7 +45,7 @@ class App
 
         if (method_exists($controller_object, $controller_method)) {
             $content = call_user_func_array([$controller_object, $controller_method], App::$router->getParams());
-//            dd($result);
+
             if (!$content) {
                 throw new Exception('Method '. $controller_method. ' of class '.$controller_class. ' does not work.');
             }
@@ -56,6 +56,13 @@ class App
 
         $layout_path = VIEWS_PATH.DS.$layout.'.php';
 //        dd($layout_path);
+
+        if(isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+
+            echo $content;
+            return;
+        }
+
         $layout_view_object = new View(compact('content'), $layout_path);
 
         echo $layout_view_object->render();

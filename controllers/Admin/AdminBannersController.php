@@ -51,12 +51,28 @@ class AdminBannersController extends Controller
 
     public function edit($id)
     {
-        $images = new Image();
-        $images = $images->all();
+        $obj = new Image();
+        $images = $obj->all();
 
         $banner = $this->model->findOrFail($id);
         $banner->images = $banner->images();
 
+        $arr = [];
+
+        foreach ($banner->images as $image) {
+            array_push($arr, $image->id);
+        }
+
+//        $select = new Image();
+
+        $banner->images = $obj
+            ->select('images.id, images.name, banner_image.position')
+            ->addJoin('banner_image','images.id', 'banner_image.image_id')
+            ->whereIn($arr, 'images.id')
+            ->orderBy('banner_image.position')
+            ->getArray();
+
+//        dd($images[0]);
         return view('banners.admin_edit', compact('images', 'banner'));
     }
 
@@ -98,5 +114,20 @@ class AdminBannersController extends Controller
         }
 
         return Router::redirect('/admin/banners/');
+    }
+
+    public function position($id)
+    {
+        $banner_image = new BannerImage();
+//        dd($_POST['position'] );
+        foreach (json_decode($_POST['position']) as $key => $item) {
+            $model = $banner_image->select()->where($id, 'banner_id')->andWhere($item, 'image_id')->getOne();
+            $model->position = ++$key;
+            $model->update();
+            $model->sql = null;
+        }
+//        dd('true');
+//        return gettype(json_decode($_POST['position']));
+        return 'true';
     }
 }
